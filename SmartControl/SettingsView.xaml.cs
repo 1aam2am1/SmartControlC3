@@ -22,7 +22,7 @@ namespace SmartControl
         IConnectSettings settings;
 
         public bool ConnectSettingsEnabled { get => settings != null; }
-        public string Url { get => settings.Url; set { settings.Url = value; } }
+        public string Url { get => settings?.Url; set { settings.Url = value; } }
 
         public SettingsView()
         {

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SmartControl.Api
 {
-    public class DataManager : IConnectSettings
+    public class DataManager : IConnectSettings, ILoginSettings
     {
 
         string _Url;
@@ -14,5 +14,11 @@ namespace SmartControl.Api
             set => _Url = value;
         }
 
+        Credentials _credentials = new Credentials();
+        public Credentials Credentials
+        {
+            get => _credentials;
+            set => _credentials = value;
+        }
     }
 }

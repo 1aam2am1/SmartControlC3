@@ -11,7 +11,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Name="MainGrid" Background="White" Height="210" Width="280">
+    <Grid Name="MainGrid" Background="White" Height="210" MinWidth="280">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="100"/>

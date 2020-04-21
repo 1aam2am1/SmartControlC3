@@ -12,16 +12,20 @@ namespace SmartControl.Api
         public void Restore(DataManager data)
         {
             data.Url = Url;
+            data.Credentials.UserName = UserName;
+            data.Credentials.Password = Password;
         }
 
         public void Save(DataManager data)
         {
             Url = data.Url;
+            UserName = data.Credentials.UserName;
+            Password = data.Credentials.Password;
         }
 
 
         [UserScopedSetting()]
-        [DefaultSettingValue("http://localhost")]
+        [DefaultSettingValue("http://localhost:22654/")]
         public string Url
         {
             get
@@ -34,6 +38,33 @@ namespace SmartControl.Api
             }
         }
 
+        [UserScopedSetting()]
+        [DefaultSettingValue("User")]
+        public string UserName
+        {
+            get
+            {
+                return this[nameof(UserName)] as string;
+            }
+            set
+            {
+                this[nameof(UserName)] = (string)value;
+            }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("")]
+        public string Password
+        {
+            get
+            {
+                return this[nameof(Password)] as string;
+            }
+            set
+            {
+                this[nameof(Password)] = (string)value;
+            }
+        }
 
         /// <summary>
         /// Singleton implementation

@@ -32,6 +32,8 @@ namespace SmartControl
             MyUserSettings.Instance.Restore(dataManager);
 
             Login login = new Login();
+            login.SetCredentials(dataManager);
+
             login.OnLoginChange += OnLoginChange;
             login.OnSettings += OnSettingsChange;
 
@@ -42,6 +44,8 @@ namespace SmartControl
         void OnLoginChange(Credentials credentials)
         {
             LoadingScreen loading = new LoadingScreen();
+            dataManager.Credentials = credentials;
+
 
             DataContext = loading;
         }

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="White">
-        <Expander Header="Server Settings" IsExpanded="True" IsEnabled="{Binding ConnectSettingsEnabled}">
+        <Expander Header="Server Settings" IsExpanded="{Binding ConnectSettingsEnabled, Mode=OneWay}" IsEnabled="{Binding ConnectSettingsEnabled}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>

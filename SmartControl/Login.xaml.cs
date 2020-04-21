@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartControl.Api;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,9 +22,19 @@ namespace SmartControl
         public event Action<Credentials> OnLoginChange;
         public event Action OnSettings;
 
+        ILoginSettings ILoginSettings;
+
         public Login()
         {
             InitializeComponent();
+        }
+
+        public void SetCredentials(ILoginSettings s)
+        {
+            ILoginSettings = s;
+
+            UserName1.Text = ILoginSettings.Credentials.UserName;
+            PasswordBox1.Password = ILoginSettings.Credentials.Password;
         }
 
         void LoginButton(object sender, RoutedEventArgs e)
