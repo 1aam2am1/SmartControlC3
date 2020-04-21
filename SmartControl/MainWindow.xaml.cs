@@ -22,13 +22,13 @@ namespace SmartControl
     /// </summary>
     public partial class MainWindow : Window
     {
-        DataManager dataManager;
+        DataManager dataManager = new DataManager();
+        Client client = new Client();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            dataManager = new DataManager();
             MyUserSettings.Instance.Restore(dataManager);
 
             Login login = new Login();
@@ -46,8 +46,12 @@ namespace SmartControl
             LoadingScreen loading = new LoadingScreen();
             dataManager.Credentials = credentials;
 
-
             DataContext = loading;
+
+            client.Connect(dataManager, dataManager, () =>
+            {
+                //DataContext = new Login();
+            });
         }
 
         void OnSettingsChange()
