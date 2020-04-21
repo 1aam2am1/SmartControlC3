@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,25 +14,24 @@ using System.Windows.Shapes;
 namespace SmartControl
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Login : UserControl
     {
-        public MainWindow()
+        public event Action<Credentials> OnLoginChange;
+
+        public Login()
         {
             InitializeComponent();
-
-            Login login = new Login();
-            login.OnLoginChange += OnLoginChange;
-
-
-            Content = login;
         }
 
-
-        void OnLoginChange(Credentials credentials)
+        void LoginButton(object sender, RoutedEventArgs e)
         {
+            Credentials credentials = new Credentials();
+            credentials.UserName = UserName1.Text;
+            credentials.Password = PasswordBox1.Password;
 
+            OnLoginChange?.Invoke(credentials);
         }
     }
 }

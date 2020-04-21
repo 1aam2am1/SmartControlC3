@@ -13,5 +13,9 @@ namespace SmartControl
     /// </summary>
     public partial class App : Application
     {
+        App()
+        {
+            /// check windows resolution. Change window size accordingly
+        }
     }
 }
