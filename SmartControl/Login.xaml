@@ -5,18 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SmartControl"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="280">
-    <Grid Background="White" Width="280" Height="450">
+             d:DesignHeight="290" d:DesignWidth="280">
+    <Grid Background="White" Width="280" Height="290" VerticalAlignment="Top">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="6*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top">
+            <Hyperlink Click="SettingsButton">Settings</Hyperlink>
+        </TextBlock>
 
 
 
         <Label Content="Login Page" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="20" Grid.Row="1"/>
-        <TextBox x:Name="UserName1" Margin="0,81,30,171" TextWrapping="Wrap" Height="18" Grid.Row="1" HorizontalAlignment="Right" Width="120"/>
+        <TextBox x:Name="UserName1" Margin="0,81,30,0" TextWrapping="Wrap" Grid.Row="1" HorizontalAlignment="Right" Width="120" Height="18" VerticalAlignment="Top"/>
         <PasswordBox x:Name="PasswordBox1" Margin="0,120,30,0" Height="18" VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Right" Width="120"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Left" Margin="30,82,0,0" Text="User name:" TextWrapping="Wrap" VerticalAlignment="Top" Height="16"/>
         <TextBlock Grid.Row="1" HorizontalAlignment="Left" Margin="30,121,0,0" Text="Password" TextWrapping="Wrap" VerticalAlignment="Top" Height="16"/>

@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartControl"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <ContentControl Content="{Binding}"/>
-    </Grid>
+        Title="MainWindow" Height="450" Width="800"
+        Closing="Window_Closing"
+        Closed="Window_Closed">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <ContentControl Name="c" Content="{Binding}"/>
+    </ScrollViewer>
 </Window>

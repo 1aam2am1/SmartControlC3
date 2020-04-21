@@ -19,6 +19,7 @@ namespace SmartControl
     public partial class Login : UserControl
     {
         public event Action<Credentials> OnLoginChange;
+        public event Action OnSettings;
 
         public Login()
         {
@@ -32,6 +33,11 @@ namespace SmartControl
             credentials.Password = PasswordBox1.Password;
 
             OnLoginChange?.Invoke(credentials);
+        }
+
+        void SettingsButton(object sender, RoutedEventArgs e)
+        {
+            OnSettings?.Invoke();
         }
     }
 }
