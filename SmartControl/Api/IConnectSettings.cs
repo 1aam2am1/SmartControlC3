@@ -7,5 +7,6 @@ namespace SmartControl.Api
     public interface IConnectSettings
     {
         public string Url { set; get; }
+        public int Port { set; get; }
     }
 }

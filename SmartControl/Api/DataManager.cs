@@ -14,6 +14,13 @@ namespace SmartControl.Api
             set => _Url = value;
         }
 
+        int _Port;
+        public int Port
+        {
+            get => _Port;
+            set => _Port = value;
+        }
+
         Credentials _credentials = new Credentials();
         public Credentials Credentials
         {

@@ -15,10 +15,14 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="21"/>
+                    <RowDefinition Height="21"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="URL:"/>
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Url, Mode=TwoWay}"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Port:"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Port, Mode=TwoWay}"/>
             </Grid>
         </Expander>
     </Grid>

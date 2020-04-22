@@ -35,12 +35,18 @@ namespace SmartControl.Api.Server
 
             try
             {
-                http.BaseAddress = new Uri(s.Url);
+                var u = new UriBuilder(s.Url);
+                if (s.Port > 1024)
+                {
+                    u.Port = s.Port;
+                }
+
+                http.BaseAddress = u.Uri;
                 //http.BaseAddress = new Uri("https://httpbin.org/");
             }
             catch
             {
-                return Task.Run(()=> false);
+                return Task.Run(() => false);
             }
 
             return Task.Run(async () =>

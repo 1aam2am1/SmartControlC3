@@ -23,6 +23,7 @@ namespace SmartControl
 
         public bool ConnectSettingsEnabled { get => settings != null; }
         public string Url { get => settings?.Url; set { settings.Url = value; } }
+        public int Port { get => settings != null ? settings.Port : 0; set { settings.Port = value; } }
 
         public SettingsView()
         {

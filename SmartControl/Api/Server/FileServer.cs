@@ -18,7 +18,7 @@ namespace SmartControl.Api.Server
         {
             return Task.Run(() =>
             {
-                file.WriteLine("Auth function: {0} {1} {2}", s.Url, i.Credentials.UserName, i.Credentials.Password);
+                file.WriteLine("Auth function: {0}:{1} {2} {3}", s.Url, s.Port, i.Credentials.UserName, i.Credentials.Password);
                 file.Flush();
 
                 if (i.Credentials.UserName == "user" && i.Credentials.Password == "password")

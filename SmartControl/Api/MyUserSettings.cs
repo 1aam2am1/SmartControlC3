@@ -12,6 +12,7 @@ namespace SmartControl.Api
         public void Restore(DataManager data)
         {
             data.Url = Url;
+            data.Port = Port;
             data.Credentials.UserName = UserName;
             data.Credentials.Password = Password;
         }
@@ -19,6 +20,7 @@ namespace SmartControl.Api
         public void Save(DataManager data)
         {
             Url = data.Url;
+            Port = data.Port;
             UserName = data.Credentials.UserName;
             Password = data.Credentials.Password;
         }
@@ -35,6 +37,20 @@ namespace SmartControl.Api
             set
             {
                 this[nameof(Url)] = (string)value;
+            }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("22654")]
+        public int Port
+        {
+            get
+            {
+                return Int32.Parse(this[nameof(Port)] as string ?? "22654");
+            }
+            set
+            {
+                this[nameof(Port)] = value;
             }
         }
 
