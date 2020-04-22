@@ -16,7 +16,15 @@ namespace SmartControl.Api.Server
         private HttpClient http;
 
 
-        private readonly string authSite = "auth";
+        private readonly static string authSite = "auth";
+        private readonly static string version = "version";
+        private readonly static string status = "status";
+        private readonly static string statusPing = status + "/ping";
+        private readonly static string parameters = "parameters";
+        private readonly static string calendar = "calendar";
+        private readonly static string modes = "modes";
+        private readonly static string history = "history";
+
 
         public HttpServer()
         {
