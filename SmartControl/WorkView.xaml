@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="SmartControl.WorkView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SmartControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White" MinWidth="800">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Column="0" Grid.Row="0" Source="/Assets/logo@2x.png" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="Uniform" />
+
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Width="500" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Main Window" Click="Button_Click"/>
+            <Button Grid.Column="1" Content="Calendar" Click="Button_Click_1"/>
+            <Button Grid.Column="2" Content="Modes" Click="Button_Click_2"/>
+            <Button Grid.Column="3" Content="Charts" Click="Button_Click_3"/>
+            <Button Grid.Column="4" Content="Settings" Click="Button_Click_4"/>
+            <Button Grid.Column="5" Content="Service" Click="Button_Click_5"/>
+
+        </Grid>
+        <ContentControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Content="{Binding}"/>
+
+    </Grid>
+</UserControl>

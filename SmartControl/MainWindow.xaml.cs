@@ -50,7 +50,7 @@ namespace SmartControl
 
             client.Connect(dataManager, dataManager, () =>
             {
-                //DataContext = new Login();
+                DataContext = new WorkView();
             });
         }
 
