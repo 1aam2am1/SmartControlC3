@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartControl.Api.Server;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,14 +8,14 @@ namespace SmartControl.Api
 {
     public class Client
     {
-
-        async public void Connect(IConnectSettings s, ILoginSettings i, Action onConnection)
+        //public Lazy<IServer> server = new Lazy<IServer>(new HttpServer());
+        public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
+        async public void Connect(IConnectSettings s, ILoginSettings i, Action<bool> onConnection)
         {
-            Task task = Task.Run(() => System.Threading.Thread.Sleep(10000));
+            var task = await server.Value.Auth(s, i);
             //wait for it to end without blocking the main thread
-            await task;
 
-            onConnection?.Invoke();
+            onConnection?.Invoke(task);
         }
     }
 }

@@ -25,13 +25,14 @@ namespace SmartControl
         DataManager dataManager = new DataManager();
         Client client = new Client();
 
+        private Login login = new Login();
+
         public MainWindow()
         {
             InitializeComponent();
 
             MyUserSettings.Instance.Restore(dataManager);
 
-            Login login = new Login();
             login.SetCredentials(dataManager);
 
             login.OnLoginChange += OnLoginChange;
@@ -48,9 +49,17 @@ namespace SmartControl
 
             DataContext = loading;
 
-            client.Connect(dataManager, dataManager, () =>
+            client.Connect(dataManager, dataManager, (n) =>
             {
-                DataContext = new WorkView();
+                if (n)
+                {
+                    DataContext = new WorkView();
+                }
+                else
+                {
+                    DataContext = login;
+                }
+
             });
         }
 
