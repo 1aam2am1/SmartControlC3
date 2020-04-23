@@ -27,7 +27,7 @@ namespace SmartControl.Api
 
 
         [UserScopedSetting()]
-        [DefaultSettingValue("http://localhost:22654/")]
+        [DefaultSettingValue("http://localhost")]
         public string Url
         {
             get

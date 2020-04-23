@@ -18,7 +18,7 @@ namespace SmartControl
     /// </summary>
     public partial class LoadingScreen : UserControl
     {
-        bool IsLoading = true;
+        public bool IsLoading = true;
 
         public LoadingScreen()
         {

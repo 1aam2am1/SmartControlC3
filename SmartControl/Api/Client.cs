@@ -8,8 +8,18 @@ namespace SmartControl.Api
 {
     public class Client
     {
+        /// <summary>
+        /// What server to use to communicate with device
+        /// </summary>
         //public Lazy<IServer> server = new Lazy<IServer>(new HttpServer());
         public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
+
+        /// <summary>
+        /// Connect to server with given settings
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="i"></param>
+        /// <param name="onConnection">1 when ok 0 if error</param>
         async public void Connect(IConnectSettings s, ILoginSettings i, Action<bool> onConnection)
         {
             var task = await server.Value.Auth(s, i);

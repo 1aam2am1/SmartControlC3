@@ -48,6 +48,12 @@ namespace SmartControl.Api.Server
                 {
                     u.Port = s.Port;
                 }
+                /*
+                if(u.Scheme == "http")
+                {
+                    u.Scheme = "https";
+                }
+                */
 
                 http.BaseAddress = u.Uri;
                 //http.BaseAddress = new Uri("https://httpbin.org/");
