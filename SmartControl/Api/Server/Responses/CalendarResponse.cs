@@ -11,6 +11,11 @@ namespace SmartControl.Api.Server.Responses
     {
         public bool Enabled { set; get; }
         public int CalState { set; get; }
+
+        /// <summary>
+        /// 1&lt;&lt;0 Monday
+        /// 1&lt;&lt;6 Sunday
+        /// </summary>
         public int ActiveDays { set; get; }
 
         [JsonConverter(typeof(MyDateConverter))]

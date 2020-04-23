@@ -19,7 +19,7 @@ namespace SmartControl.Api
         /// </summary>
         /// <param name="s"></param>
         /// <param name="i"></param>
-        /// <param name="onConnection">1 when ok 0 if error</param>
+        /// <param name="onConnection">1 when OK 0 if error</param>
         async public void Connect(IConnectSettings s, ILoginSettings i, Action<bool> onConnection)
         {
             var task = await server.Value.Auth(s, i);

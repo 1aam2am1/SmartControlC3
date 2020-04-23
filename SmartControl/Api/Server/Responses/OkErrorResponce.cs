@@ -8,7 +8,7 @@ namespace SmartControl.Api.Server.Responses
     public class OkErrorResponce
     {
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public enum Result
+        public enum R
         {
             /// <summary>
             /// Saved
@@ -23,5 +23,7 @@ namespace SmartControl.Api.Server.Responses
             /// </summary>
             NoPermission,
         }
+
+        public R Result { set; get; }
     }
 }

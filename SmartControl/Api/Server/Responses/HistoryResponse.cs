@@ -13,14 +13,14 @@ namespace SmartControl.Api.Server.Responses
                 /// <summary>
                 /// Time in seconds from 1.01.1970 UTC
                 /// </summary>
-                public int T { set; get; }
+                public long T { set; get; }
                 /// <summary>
                 /// Historical Value of parameter
                 /// </summary>
                 public int V { set; get; }
             }
 
-            public int Parameters { set; get; }
+            public int Parameter { set; get; }
             public List<Q> V { set; get; }
         }
 

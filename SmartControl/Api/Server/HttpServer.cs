@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using SmartControl.Api.Server.Responses;
+using SmartControl.Api.Server.Queries;
+using SmartControl.Api.Server.SaveQueries;
 
 namespace SmartControl.Api.Server
 {
@@ -86,6 +88,71 @@ namespace SmartControl.Api.Server
                     return false;
                 }
             });
+        }
+
+        public Task<VersionResponse> Version()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StatusResponse> GetFullStatus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartAsyncPing(Action<int> v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClosePingClient()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ParameterResponse> GetParameters(ParameterQuery parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CalendarResponse> GetCalendarData()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CalendarDayResponse> GetTask(CalendarDayQuery day)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ModesResponse> GetModes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<HistoryResponse> GetHistoricalData(HistoryQuery history)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OkErrorResponce> SaveParameters(ParameterSave parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OkErrorResponce> SaveCalendar(CalendarSave calendar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OkErrorResponce> SaveDayTask(CalendarDaySave calendar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OkErrorResponce> SaveModes(ModesSave modes)
+        {
+            throw new NotImplementedException();
         }
     }
 }
