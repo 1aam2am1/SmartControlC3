@@ -21,6 +21,8 @@ namespace SmartControl
     {
         ConnectSettings settings;
 
+        public event Action OnSettingsClose;
+
         public bool ConnectSettingsEnabled { get => settings != null; }
         public string Url { get => settings?.Url; set { settings.Url = value; } }
         public int Port { get => settings != null ? settings.Port : 0; set { settings.Port = value; } }
@@ -33,6 +35,11 @@ namespace SmartControl
         public void setConnectSettings(ConnectSettings s)
         {
             settings = s;
+        }
+
+        private void Button_Close_Click(object sender, RoutedEventArgs e)
+        {
+            OnSettingsClose?.Invoke();
         }
     }
 }

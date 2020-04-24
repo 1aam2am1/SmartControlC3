@@ -19,12 +19,12 @@ namespace SmartControl
     /// </summary>
     public partial class WorkView : UserControl
     {
-        Lazy<DisplayView> display = new Lazy<DisplayView>(new DisplayView());
-        Lazy<CalendarView> calendar = new Lazy<CalendarView>(new CalendarView());
-        Lazy<ModesView> modes = new Lazy<ModesView>(new ModesView());
-        Lazy<ChartsView> charts = new Lazy<ChartsView>(new ChartsView());
-        Lazy<SettingsView> settings = new Lazy<SettingsView>(new SettingsView());
-        Lazy<ServiceView> service = new Lazy<ServiceView>(new ServiceView());
+        readonly Lazy<DisplayView> display = new Lazy<DisplayView>(new DisplayView());
+        readonly Lazy<CalendarView> calendar = new Lazy<CalendarView>(new CalendarView());
+        readonly Lazy<ModesView> modes = new Lazy<ModesView>(new ModesView());
+        readonly Lazy<ChartsView> charts = new Lazy<ChartsView>(new ChartsView());
+        readonly Lazy<WorkViews.SettingsView> settings = new Lazy<WorkViews.SettingsView>(new WorkViews.SettingsView());
+        readonly Lazy<ServiceView> service = new Lazy<ServiceView>(new ServiceView());
         public WorkView()
         {
             InitializeComponent();

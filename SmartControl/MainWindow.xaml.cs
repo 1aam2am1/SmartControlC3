@@ -25,7 +25,7 @@ namespace SmartControl
         ConnectSettings settings = new ConnectSettings();
         readonly Client client = new Client();
 
-        private Login login = new Login();
+        private readonly Login login = new Login();
 
         public MainWindow()
         {
@@ -67,8 +67,14 @@ namespace SmartControl
         {
             SettingsView settings = new SettingsView();
             settings.setConnectSettings(this.settings);
+            settings.OnSettingsClose += OnSettingsClose;
 
             DataContext = settings;
+        }
+
+        void OnSettingsClose()
+        {
+            DataContext = login;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

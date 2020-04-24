@@ -6,6 +6,17 @@
              xmlns:local="clr-namespace:SmartControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="ImageButtonStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="White">
         <Expander Header="Server Settings" IsExpanded="{Binding ConnectSettingsEnabled, Mode=OneWay}" IsEnabled="{Binding ConnectSettingsEnabled}">
             <Grid>
@@ -20,10 +31,14 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="URL:"/>
                 <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Url, Mode=TwoWay}"/>
-                
+
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Port:"/>
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Port, Mode=TwoWay}"/>
             </Grid>
         </Expander>
+        <Button Style="{StaticResource ImageButtonStyle}" Click="Button_Close_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0" Height="11">
+            <Image Source="/Assets/close@2x.png" Margin="0,0,0,0"/>
+        </Button>
+
     </Grid>
 </UserControl>
