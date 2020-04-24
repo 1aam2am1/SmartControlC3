@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
+using SmartControl.Settings;
+using SmartControl.Api.Data;
 
 namespace SmartControl
 {
@@ -22,7 +24,7 @@ namespace SmartControl
     /// </summary>
     public partial class MainWindow : Window
     {
-        ConnectSettings settings = new ConnectSettings();
+        readonly ConnectSettings settings = new ConnectSettings();
         readonly Client client = new Client();
 
         private readonly Login login = new Login();
@@ -53,6 +55,8 @@ namespace SmartControl
             {
                 if (n)
                 {
+                    MyUserSettings.Instance.Save(credentials);
+
                     DataContext = new WorkView();
                 }
                 else
@@ -74,6 +78,7 @@ namespace SmartControl
 
         void OnSettingsClose()
         {
+            MyUserSettings.Instance.Save(this.settings);
             DataContext = login;
         }
 

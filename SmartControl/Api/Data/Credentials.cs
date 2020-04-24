@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartControl
+namespace SmartControl.Api.Data
 {
     public class Credentials
     {

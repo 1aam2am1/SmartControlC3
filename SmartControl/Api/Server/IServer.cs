@@ -1,4 +1,5 @@
-﻿using SmartControl.Api.Server.Queries;
+﻿using SmartControl.Api.Data;
+using SmartControl.Api.Server.Queries;
 using SmartControl.Api.Server.Responses;
 using SmartControl.Api.Server.SaveQueries;
 using System;

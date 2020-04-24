@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartControl.Api
+namespace SmartControl.Api.Data
 {
     public class ConnectSettings
     {

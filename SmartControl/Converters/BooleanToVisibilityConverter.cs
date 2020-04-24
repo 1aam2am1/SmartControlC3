@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace SmartControl
+namespace SmartControl.Converters
 {
     public class BooleanToVisibilityConverter : IValueConverter
     {

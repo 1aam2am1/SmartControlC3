@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using SmartControl.Api.Server.Responses;
 using SmartControl.Api.Server.Queries;
 using SmartControl.Api.Server.SaveQueries;
+using SmartControl.Api.Data;
 
 namespace SmartControl.Api.Server
 {

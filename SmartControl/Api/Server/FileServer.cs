@@ -8,6 +8,7 @@ using SmartControl.Api.Server.Queries;
 using SmartControl.Api.Server.SaveQueries;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using SmartControl.Api.Data;
 
 namespace SmartControl.Api.Server
 {

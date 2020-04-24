@@ -4,8 +4,9 @@ using System.Configuration;
 using System.Security.Policy;
 using System.Text;
 using System.Drawing;
+using SmartControl.Api.Data;
 
-namespace SmartControl.Api
+namespace SmartControl.Settings
 {
     internal class MyUserSettings : ApplicationSettingsBase
     {
