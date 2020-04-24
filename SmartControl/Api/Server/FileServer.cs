@@ -19,14 +19,14 @@ namespace SmartControl.Api.Server
             file = new StreamWriter("FileServer.txt");
         }
 
-        public Task<bool> Auth(IConnectSettings s, ILoginSettings i)
+        public Task<bool> Auth(ConnectSettings s, Credentials i)
         {
             return Task.Run(() =>
             {
-                file.WriteLine("Auth function: {0}:{1} {2} {3}", s.Url, s.Port, i.Credentials.UserName, i.Credentials.Password);
+                file.WriteLine("Auth function: {0}:{1} {2} {3}", s.Url, s.Port, i.UserName, i.Password);
                 file.Flush();
 
-                if (i.Credentials.UserName == "user" && i.Credentials.Password == "password")
+                if (i.UserName == "user" && i.Password == "password")
                 {
                     return true;
                 }

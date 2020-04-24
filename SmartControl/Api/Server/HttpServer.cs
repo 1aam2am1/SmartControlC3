@@ -37,11 +37,11 @@ namespace SmartControl.Api.Server
             http = new HttpClient(handler);
         }
 
-        public Task<bool> Auth(IConnectSettings s, ILoginSettings i)
+        public Task<bool> Auth(ConnectSettings s, Credentials i)
         {
             //handler.Credentials = new NetworkCredential(i.Credentials.UserName, i.Credentials.Password);
-            (handler.Credentials as NetworkCredential).UserName = i.Credentials.UserName;
-            (handler.Credentials as NetworkCredential).Password = i.Credentials.Password;
+            (handler.Credentials as NetworkCredential).UserName = i.UserName;
+            (handler.Credentials as NetworkCredential).Password = i.Password;
 
             try
             {
@@ -77,7 +77,7 @@ namespace SmartControl.Api.Server
                     var s = await response.Content.ReadAsStringAsync();
 
 
-                    if (json.user == i.Credentials.UserName && json.authenticated)
+                    if (json.user == i.UserName && json.authenticated)
                     {
                         return true;
                     }

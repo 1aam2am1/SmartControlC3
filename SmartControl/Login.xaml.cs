@@ -22,19 +22,19 @@ namespace SmartControl
         public event Action<Credentials> OnLoginChange;
         public event Action OnSettings;
 
-        ILoginSettings ILoginSettings;
+        Credentials ILoginSettings;
 
         public Login()
         {
             InitializeComponent();
         }
 
-        public void SetCredentials(ILoginSettings s)
+        public void SetCredentials(Credentials s)
         {
             ILoginSettings = s;
 
-            UserName1.Text = ILoginSettings.Credentials.UserName;
-            PasswordBox1.Password = ILoginSettings.Credentials.Password;
+            UserName1.Text = ILoginSettings.UserName;
+            PasswordBox1.Password = ILoginSettings.Password;
         }
 
         void LoginButton(object sender, RoutedEventArgs e)

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SmartControl.Api
 {
-    public interface IConnectSettings
+    public class ConnectSettings
     {
         public string Url { set; get; }
         public int Port { set; get; }

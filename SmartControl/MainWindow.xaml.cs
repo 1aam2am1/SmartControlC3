@@ -22,8 +22,8 @@ namespace SmartControl
     /// </summary>
     public partial class MainWindow : Window
     {
-        DataManager dataManager = new DataManager();
-        Client client = new Client();
+        ConnectSettings settings = new ConnectSettings();
+        readonly Client client = new Client();
 
         private Login login = new Login();
 
@@ -31,9 +31,11 @@ namespace SmartControl
         {
             InitializeComponent();
 
-            MyUserSettings.Instance.Restore(dataManager);
+            Credentials credentials = new Credentials();
 
-            login.SetCredentials(dataManager);
+            MyUserSettings.Instance.Restore(settings);
+            MyUserSettings.Instance.Restore(credentials);
+            login.SetCredentials(credentials);
 
             login.OnLoginChange += OnLoginChange;
             login.OnSettings += OnSettingsChange;
@@ -41,15 +43,13 @@ namespace SmartControl
             DataContext = login;
         }
 
-
         void OnLoginChange(Credentials credentials)
         {
             LoadingScreen loading = new LoadingScreen();
-            dataManager.Credentials = credentials;
 
             DataContext = loading;
 
-            client.Connect(dataManager, dataManager, (n) =>
+            client.Connect(settings, credentials, (n) =>
             {
                 if (n)
                 {
@@ -66,14 +66,13 @@ namespace SmartControl
         void OnSettingsChange()
         {
             SettingsView settings = new SettingsView();
-            settings.setConnectSettings(dataManager);
+            settings.setConnectSettings(this.settings);
 
             DataContext = settings;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MyUserSettings.Instance.Save(dataManager);
             MyUserSettings.Instance.Save();
         }
 

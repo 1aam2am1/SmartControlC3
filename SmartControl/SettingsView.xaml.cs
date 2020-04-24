@@ -19,7 +19,7 @@ namespace SmartControl
     /// </summary>
     public partial class SettingsView : UserControl
     {
-        IConnectSettings settings;
+        ConnectSettings settings;
 
         public bool ConnectSettingsEnabled { get => settings != null; }
         public string Url { get => settings?.Url; set { settings.Url = value; } }
@@ -30,7 +30,7 @@ namespace SmartControl
             InitializeComponent();
         }
 
-        public void setConnectSettings(IConnectSettings s)
+        public void setConnectSettings(ConnectSettings s)
         {
             settings = s;
         }

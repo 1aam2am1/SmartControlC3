@@ -8,30 +8,10 @@ using System.Text;
 
 namespace SmartControl.Api
 {
-    public class DataManager : IConnectSettings, ILoginSettings, IDataSettings
+    public class DataManager : IDataSettings
     {
+        //TODO: Connect and remake this class
         public event PropertyChangedEventHandler PropertyChanged;
-
-        string _Url;
-        public string Url
-        {
-            get => _Url;
-            set => _Url = value;
-        }
-
-        int _Port;
-        public int Port
-        {
-            get => _Port;
-            set => _Port = value;
-        }
-
-        Credentials _credentials = new Credentials();
-        public Credentials Credentials
-        {
-            get => _credentials;
-            set => _credentials = value;
-        }
 
         StatusResponse _status = new StatusResponse();
         public StatusResponse Status

@@ -9,20 +9,28 @@ namespace SmartControl.Api
 {
     internal class MyUserSettings : ApplicationSettingsBase
     {
-        public void Restore(DataManager data)
+        public void Restore(ConnectSettings data)
         {
             data.Url = Url;
             data.Port = Port;
-            data.Credentials.UserName = UserName;
-            data.Credentials.Password = Password;
         }
 
-        public void Save(DataManager data)
+        public void Restore(Credentials data)
+        {
+            data.UserName = UserName;
+            data.Password = Password;
+        }
+
+        public void Save(ConnectSettings data)
         {
             Url = data.Url;
             Port = data.Port;
-            UserName = data.Credentials.UserName;
-            Password = data.Credentials.Password;
+        }
+
+        public void Save(Credentials data)
+        {
+            UserName = data.UserName;
+            Password = data.Password;
         }
 
 

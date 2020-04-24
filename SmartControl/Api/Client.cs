@@ -20,7 +20,7 @@ namespace SmartControl.Api
         /// <param name="s"></param>
         /// <param name="i"></param>
         /// <param name="onConnection">1 when OK 0 if error</param>
-        async public void Connect(IConnectSettings s, ILoginSettings i, Action<bool> onConnection)
+        async public void Connect(ConnectSettings s, Credentials i, Action<bool> onConnection)
         {
             var task = await server.Value.Auth(s, i);
             //wait for it to end without blocking the main thread

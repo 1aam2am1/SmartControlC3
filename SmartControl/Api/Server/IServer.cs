@@ -16,7 +16,7 @@ namespace SmartControl.Api.Server
         /// <param name="s">Connection Settings</param>
         /// <param name="i">Login Settings. Login and Password</param>
         /// <returns></returns>
-        public Task<bool> Auth(IConnectSettings s, ILoginSettings i);
+        public Task<bool> Auth(ConnectSettings s, Credentials i);
 
         #region GetData
 
