@@ -27,6 +27,8 @@ namespace SmartControl.Api.Server
                 file.WriteLine("Auth function: {0}:{1} {2} {3}", s.Url, s.Port, i.UserName, i.Password);
                 file.Flush();
 
+                Thread.Sleep(2000);
+
                 if (i.UserName == "user" && i.Password == "password")
                 {
                     return true;
@@ -113,8 +115,8 @@ namespace SmartControl.Api.Server
                 Thread.Sleep(1000);
 
                 var result = new StatusResponse();
-                result.Status = StatusResponse.WorkStatus.Work;
-                result.Work = StatusResponse.ModStatus.GWC;
+                result.Status = WorkStatus.Work;
+                result.Work = ModStatus.GWC;
                 result.Heater = false;
                 result.ByPass = false;
                 result.Errors = 0;
@@ -140,15 +142,16 @@ namespace SmartControl.Api.Server
                 var result = new HistoryResponse();
                 TimeSpan interval = DateTime.Now - DateTime.UnixEpoch;
 
-                result.Parameters = new List<HistoryResponse.P> {
-                    new HistoryResponse.P{Parameter=34, V = new List<HistoryResponse.P.Q>{
-                        new HistoryResponse.P.Q {T = (long)Math.Floor(interval.TotalSeconds), V = 10 },
-                        new HistoryResponse.P.Q {T = (long)Math.Floor(interval.TotalSeconds) - 120, V = 12 }
+                result.Parameters = new Dictionary<int, List<ValueInTime>>
+                {
+                    {34, new List<ValueInTime> {
+                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds), Value = 10},
+                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds) - 120, Value = 12},
                         }
                     },
-                    new HistoryResponse.P{Parameter=35, V = new List<HistoryResponse.P.Q>{
-                        new HistoryResponse.P.Q {T = (long)Math.Floor(interval.TotalSeconds), V = 14 },
-                        new HistoryResponse.P.Q {T = (long)Math.Floor(interval.TotalSeconds) - 60, V = 20 }
+                    {35, new List<ValueInTime> {
+                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds), Value = 14},
+                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds) - 60, Value = 20},
                         }
                     }
                 };
@@ -166,13 +169,13 @@ namespace SmartControl.Api.Server
                 Thread.Sleep(100);
 
                 var result = new ModesResponse();
-                result.Modes = new List<ModesResponse.P>
+                result.Modes = new Dictionary<int, ModesStatus>
                 {
-                    new ModesResponse.P{I = true, V = 50},
-                    new ModesResponse.P{I = false, V = 60},
-                    new ModesResponse.P{I = false, V = 0},
-                    new ModesResponse.P{I = true, V = 0},
-                    new ModesResponse.P{I = false, V = 20},
+                    {1, new ModesStatus{ Active = true, Value = 50} },
+                    {2, new ModesStatus{ Active = false, Value = 60} },
+                    {3, new ModesStatus{ Active = false, Value = 0} },
+                    {4, new ModesStatus{ Active = true, Value = 0} },
+                    {5, new ModesStatus{ Active = false, Value = 20} }
                 };
 
 
@@ -189,18 +192,18 @@ namespace SmartControl.Api.Server
                 Thread.Sleep(100);
 
                 var result = new ParameterResponse();
-                result.Parameters = new List<ParameterResponse.P>
+                result.Parameters = new Dictionary<int, int>
                 {
-                    new ParameterResponse.P{I = 0, V = 20},
-                    new ParameterResponse.P{I = 1, V = 10},
-                    new ParameterResponse.P{I = 2, V = 16},
-                    new ParameterResponse.P{I = 3, V = 18},
-                    new ParameterResponse.P{I = 4, V = 36},
-                    new ParameterResponse.P{I = 5, V = 30},
-                    new ParameterResponse.P{I = 6, V = 60},
-                    new ParameterResponse.P{I = 7, V = 100},
-                    new ParameterResponse.P{I = 8, V = 120},
-                    new ParameterResponse.P{I = 9, V = 24}
+                    {0, 20},
+                    {1, 10},
+                    {2, 16},
+                    {3, 18},
+                    {4, 36},
+                    {5, 30},
+                    {6, 60},
+                    {7, 100},
+                    {8, 120},
+                    {9, 24}
                 };
 
                 return result;
@@ -217,9 +220,9 @@ namespace SmartControl.Api.Server
 
                 var result = new CalendarDayResponse();
                 result.Day = day.Day;
-                result.Tasks = new List<CalendarDayResponse.CalendarTask>
+                result.Tasks = new List<CalendarTask>
                 {
-                    new CalendarDayResponse.CalendarTask
+                    new CalendarTask
                     {
                         Enabled = true,
                         Hour = 1,
@@ -247,7 +250,7 @@ namespace SmartControl.Api.Server
 
                 var result = new OkErrorResponce();
 
-                result.Result = OkErrorResponce.R.Ok;
+                result.Result = OkStatus.Ok;
 
                 return result;
             });
@@ -263,7 +266,7 @@ namespace SmartControl.Api.Server
 
                 var result = new OkErrorResponce();
 
-                result.Result = OkErrorResponce.R.Error;
+                result.Result = OkStatus.Error;
 
                 return result;
             });
@@ -279,7 +282,7 @@ namespace SmartControl.Api.Server
 
                 var result = new OkErrorResponce();
 
-                result.Result = OkErrorResponce.R.Ok;
+                result.Result = OkStatus.Ok;
 
                 return result;
             });
@@ -295,7 +298,7 @@ namespace SmartControl.Api.Server
 
                 var result = new OkErrorResponce();
 
-                result.Result = OkErrorResponce.R.Ok;
+                result.Result = OkStatus.Ok;
 
                 return result;
             });

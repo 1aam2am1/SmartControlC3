@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartControl.Api.Data;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,30 +8,6 @@ namespace SmartControl.Api.Server.Responses
 {
     public class StatusResponse
     {
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public enum WorkStatus
-        {
-            Starting,
-            Work,
-            Erros,
-            ByPass,
-            Defrost,
-            Reheating
-        }
-
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public enum ModStatus
-        {
-            Ventilation,
-            Boost,
-            Airing,
-            OpenWindow,
-            Holiday,
-            Sleep,
-            GWC,
-            Calendar
-        }
-
         public WorkStatus Status { set; get; }
         public ModStatus Work { set; get; }
         public bool Heater { set; get; }

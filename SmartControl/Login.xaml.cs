@@ -1,5 +1,4 @@
-﻿using SmartControl.Api;
-using SmartControl.Api.Data;
+﻿using SmartControl.Api.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;

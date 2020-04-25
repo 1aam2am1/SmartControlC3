@@ -78,7 +78,7 @@ namespace SmartControl.Api.Server
                     var s = await response.Content.ReadAsStringAsync();
 
 
-                    if (json.user == i.UserName && json.authenticated)
+                    if (json.User == i.UserName && json.Authenticated)
                     {
                         return true;
                     }

@@ -1,4 +1,4 @@
-﻿using SmartControl.Api.Server.Responses;
+﻿using SmartControl.Api.Server.MyJsonConverter;
 using System;
 using System.Collections.Generic;
 using System.Text;
