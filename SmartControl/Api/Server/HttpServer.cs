@@ -10,13 +10,14 @@ using SmartControl.Api.Server.Responses;
 using SmartControl.Api.Server.Queries;
 using SmartControl.Api.Server.SaveQueries;
 using SmartControl.Api.Data;
+using System.Threading;
 
 namespace SmartControl.Api.Server
 {
     public class HttpServer : IServer
     {
-        private HttpClientHandler handler;
-        private HttpClient http;
+        private readonly HttpClientHandler handler;
+        private readonly HttpClient http;
 
 
         private readonly static string authSite = "auth";
@@ -31,11 +32,16 @@ namespace SmartControl.Api.Server
 
         public HttpServer()
         {
-            handler = new HttpClientHandler();
-            handler.Credentials = new NetworkCredential();
-            handler.PreAuthenticate = true;
+            handler = new HttpClientHandler
+            {
+                Credentials = new NetworkCredential(),
+                PreAuthenticate = true
+            };
 
-            http = new HttpClient(handler);
+            http = new HttpClient(handler)
+            {
+                Timeout = Timeout.InfiniteTimeSpan
+            };
         }
 
         public Task<bool> Auth(ConnectSettings s, Credentials i)
@@ -70,7 +76,10 @@ namespace SmartControl.Api.Server
             {
                 try
                 {
-                    var response = await http.GetAsync(authSite);
+                    var cts = new CancellationTokenSource();
+                    cts.CancelAfter(TimeSpan.FromSeconds(30));
+
+                    var response = await http.GetAsync(authSite, cts.Token);
 
                     response.EnsureSuccessStatusCode();
 
