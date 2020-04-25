@@ -34,13 +34,12 @@ namespace SmartControl.Api.Server
         public Task<StatusResponse> GetFullStatus();
 
         /// <summary>
-        /// 
+        /// Start Async Ping
         /// </summary>
         /// <param name="v">Function that will execute on message received
-        /// 0 No change
-        /// 1 Change
-        /// 2 Error connection lost
-        /// 3 Closed <see cref="ClosePingClient"/>
+        /// <see cref="StatusPingLowResponse.NoChange"/>
+        /// <see cref="ClosePingClient"/>
+        /// -1 internal error
         /// </param>
         public void StartAsyncPing(Action<int> v);
 

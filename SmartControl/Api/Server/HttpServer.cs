@@ -11,6 +11,8 @@ using SmartControl.Api.Server.Queries;
 using SmartControl.Api.Server.SaveQueries;
 using SmartControl.Api.Data;
 using System.Threading;
+using System.Reflection;
+using System.IO;
 
 namespace SmartControl.Api.Server
 {
@@ -21,13 +23,22 @@ namespace SmartControl.Api.Server
 
 
         private readonly static string authSite = "auth";
-        private readonly static string version = "version";
-        private readonly static string status = "status";
-        private readonly static string statusPing = status + "/ping";
-        private readonly static string parameters = "parameters";
-        private readonly static string calendar = "calendar";
-        private readonly static string modes = "modes";
-        private readonly static string history = "history";
+        private readonly static string versionSite = "version";
+
+        private readonly static string statusSite = "status";
+        private readonly static string statusPingSite = statusSite + "/ping";
+
+        private readonly static string parametersSite = "parameters";
+        private readonly static string parametersSaveSite = parametersSite + "/save";
+
+        private readonly static string calendarSite = "calendar";
+        private readonly static string calendarSaveSite = calendarSite + "/save";
+        private readonly static string calendarDaySaveSite = calendarSite + "/day/save";
+
+        private readonly static string modesSite = "modes";
+        private readonly static string modesSaveSite = modesSite + "/save";
+
+        private readonly static string historySite = "history";
 
 
         public HttpServer()
@@ -84,8 +95,6 @@ namespace SmartControl.Api.Server
                     response.EnsureSuccessStatusCode();
 
                     var json = JsonSerializer.Deserialize<PasswdResponse>(await response.Content.ReadAsStringAsync());
-                    var s = await response.Content.ReadAsStringAsync();
-
 
                     if (json.User == i.UserName && json.Authenticated)
                     {
@@ -102,67 +111,179 @@ namespace SmartControl.Api.Server
 
         public Task<VersionResponse> Version()
         {
-            throw new NotImplementedException();
+            var Version = new VersionQuery
+            {
+                ApiVersion = new MyVersion { Major = 1, Minor = 0, Build = 0 },
+                AppVersion = Assembly.GetExecutingAssembly().GetName().Version
+            };
+
+            return SendJsonQuery<VersionResponse, VersionQuery>(Version, versionSite);
         }
 
         public Task<StatusResponse> GetFullStatus()
         {
-            throw new NotImplementedException();
+            return SendGetQuery<StatusResponse>(statusSite);
         }
 
+
+        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         public void StartAsyncPing(Action<int> v)
         {
-            throw new NotImplementedException();
+            cancellationTokenSource.Cancel();
+
+            var token = cancellationTokenSource.Token;
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var response = await http.GetAsync(statusPingSite, HttpCompletionOption.ResponseHeadersRead, token);
+
+                    response.EnsureSuccessStatusCode();
+
+                    using var body = await response.Content.ReadAsStreamAsync();
+                    using var reader = new StreamReader(body);
+                    while (!reader.EndOfStream)
+                    {
+                        string message = reader.ReadLine();
+                        if (message == null) { continue; }
+
+                        var json = JsonSerializer.Deserialize<StatusPingLowResponse>(message);
+
+                        v.Invoke(json.NoChange);
+                    }
+                }
+                finally
+                {
+                    if (!token.IsCancellationRequested)
+                    {
+                        v.Invoke(-1);
+                    }
+                }
+            }, token);
         }
 
         public void ClosePingClient()
         {
-            throw new NotImplementedException();
+            cancellationTokenSource.Cancel();
         }
 
         public Task<ParameterResponse> GetParameters(ParameterQuery parameter)
         {
-            throw new NotImplementedException();
+            return SendJsonQuery<ParameterResponse, ParameterQuery>(parameter, parametersSite);
         }
 
         public Task<CalendarResponse> GetCalendarData()
         {
-            throw new NotImplementedException();
+            return SendGetQuery<CalendarResponse>(calendarSite);
         }
 
         public Task<CalendarDayResponse> GetTask(CalendarDayQuery day)
         {
-            throw new NotImplementedException();
+            return SendJsonQuery<CalendarDayResponse, CalendarDayQuery>(day, calendarSite);
         }
 
         public Task<ModesResponse> GetModes()
         {
-            throw new NotImplementedException();
+            return SendGetQuery<ModesResponse>(modesSite);
         }
 
         public Task<HistoryResponse> GetHistoricalData(HistoryQuery history)
         {
-            throw new NotImplementedException();
+            return SendJsonQuery<HistoryResponse, HistoryQuery>(history, historySite);
         }
 
         public Task<OkErrorResponce> SaveParameters(ParameterSave parameter)
         {
-            throw new NotImplementedException();
+            return SendJsonQuery<OkErrorResponce, ParameterSave>(parameter, parametersSaveSite);
         }
 
         public Task<OkErrorResponce> SaveCalendar(CalendarSave calendar)
         {
-            throw new NotImplementedException();
+            return SendJsonQuery<OkErrorResponce, CalendarSave>(calendar, calendarSaveSite);
         }
 
         public Task<OkErrorResponce> SaveDayTask(CalendarDaySave calendar)
         {
-            throw new NotImplementedException();
+            return SendJsonQuery<OkErrorResponce, CalendarDaySave>(calendar, calendarDaySaveSite);
         }
 
         public Task<OkErrorResponce> SaveModes(ModesSave modes)
         {
-            throw new NotImplementedException();
+            return SendJsonQuery<OkErrorResponce, ModesSave>(modes, modesSaveSite);
+        }
+
+        /// <summary>
+        /// Send JSON Post message
+        /// </summary>
+        /// <typeparam name="TResult">Return type</typeparam>
+        /// <typeparam name="T">Query type</typeparam>
+        /// <param name="message">Query to send</param>
+        /// <param name="site">Where send message</param>
+        /// <returns>Required response or throw</returns>
+        private Task<TResult> SendJsonQuery<TResult, T>(T message, string site)
+        {
+            return Task.Run(async () =>
+            {
+                HttpResponseMessage response = null;
+                try
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.CancelAfter(TimeSpan.FromSeconds(30));
+
+                    var content = new StringContent(JsonSerializer.Serialize(message), Encoding.UTF8, "application/json");
+                    response = await http.PostAsync(site, content, cts.Token);
+
+                    response.EnsureSuccessStatusCode();
+
+                    var json = JsonSerializer.Deserialize<TResult>(await response.Content.ReadAsStringAsync());
+
+                    return json;
+                }
+                catch (HttpRequestException)
+                {
+                    throw new RuntimeException(await response?.Content.ReadAsStringAsync());
+                }
+                catch
+                {
+                    throw new RuntimeException();
+                }
+            });
+        }
+
+        /// <summary>
+        /// Send Get request
+        /// </summary>
+        /// <typeparam name="TResult">Return type</typeparam>
+        /// <param name="site">Where send message</param>
+        /// <returns></returns>
+        private Task<TResult> SendGetQuery<TResult>(string site)
+        {
+            return Task.Run(async () =>
+            {
+                HttpResponseMessage response = null;
+                try
+                {
+                    var cts = new CancellationTokenSource();
+                    cts.CancelAfter(TimeSpan.FromSeconds(30));
+
+                    response = await http.GetAsync(site, cts.Token);
+
+                    response.EnsureSuccessStatusCode();
+
+                    var json = JsonSerializer.Deserialize<TResult>(await response.Content.ReadAsStringAsync());
+
+                    return json;
+                }
+                catch (HttpRequestException)
+                {
+                    throw new RuntimeException(await response?.Content.ReadAsStringAsync());
+                }
+                catch
+                {
+                    throw new RuntimeException();
+                }
+            });
         }
     }
 }

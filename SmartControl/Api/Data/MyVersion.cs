@@ -13,6 +13,17 @@ namespace SmartControl.Api.Data
         public int Minor { set; get; }
         public int Build { set; get; }
         public int Revision { set; get; }
+
+        public static implicit operator MyVersion(Version v)
+        {
+            return new MyVersion
+            {
+                Major = v.Major,
+                Minor = v.Minor,
+                Build = v.Build,
+                Revision = v.Revision
+            };
+        }
     }
 
 
