@@ -55,7 +55,7 @@ namespace SmartControl.Api.Server
             };
         }
 
-        public Task<bool> Auth(ConnectSettings s, Credentials i)
+        public async Task<bool> Auth(ConnectSettings s, Credentials i)
         {
             //handler.Credentials = new NetworkCredential(i.Credentials.UserName, i.Credentials.Password);
             (handler.Credentials as NetworkCredential).UserName = i.UserName;
@@ -80,33 +80,30 @@ namespace SmartControl.Api.Server
             }
             catch
             {
-                return Task.Run(() => false);
+                return false;
             }
 
-            return Task.Run(async () =>
+            try
             {
-                try
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(TimeSpan.FromSeconds(30));
+
+                var response = await http.GetAsync(authSite, cts.Token);
+
+                response.EnsureSuccessStatusCode();
+
+                var json = JsonSerializer.Deserialize<PasswdResponse>(await response.Content.ReadAsStringAsync());
+
+                if (json.User == i.UserName && json.Authenticated)
                 {
-                    var cts = new CancellationTokenSource();
-                    cts.CancelAfter(TimeSpan.FromSeconds(30));
-
-                    var response = await http.GetAsync(authSite, cts.Token);
-
-                    response.EnsureSuccessStatusCode();
-
-                    var json = JsonSerializer.Deserialize<PasswdResponse>(await response.Content.ReadAsStringAsync());
-
-                    if (json.User == i.UserName && json.Authenticated)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return true;
                 }
-                catch
-                {
-                    return false;
-                }
-            });
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public Task<VersionResponse> Version()
@@ -221,34 +218,31 @@ namespace SmartControl.Api.Server
         /// <param name="message">Query to send</param>
         /// <param name="site">Where send message</param>
         /// <returns>Required response or throw</returns>
-        private Task<TResult> SendJsonQuery<TResult, T>(T message, string site)
+        private async Task<TResult> SendJsonQuery<TResult, T>(T message, string site)
         {
-            return Task.Run(async () =>
+            HttpResponseMessage response = null;
+            try
             {
-                HttpResponseMessage response = null;
-                try
-                {
-                    var cts = new CancellationTokenSource();
-                    cts.CancelAfter(TimeSpan.FromSeconds(30));
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(TimeSpan.FromSeconds(30));
 
-                    var content = new StringContent(JsonSerializer.Serialize(message), Encoding.UTF8, "application/json");
-                    response = await http.PostAsync(site, content, cts.Token);
+                var content = new StringContent(JsonSerializer.Serialize(message), Encoding.UTF8, "application/json");
+                response = await http.PostAsync(site, content, cts.Token);
 
-                    response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
-                    var json = JsonSerializer.Deserialize<TResult>(await response.Content.ReadAsStringAsync());
+                var json = JsonSerializer.Deserialize<TResult>(await response.Content.ReadAsStringAsync());
 
-                    return json;
-                }
-                catch (HttpRequestException)
-                {
-                    throw new RuntimeException(await response?.Content.ReadAsStringAsync());
-                }
-                catch
-                {
-                    throw new RuntimeException();
-                }
-            });
+                return json;
+            }
+            catch (HttpRequestException)
+            {
+                throw new RuntimeException(await response?.Content.ReadAsStringAsync());
+            }
+            catch
+            {
+                throw new RuntimeException();
+            }
         }
 
         /// <summary>
@@ -257,33 +251,30 @@ namespace SmartControl.Api.Server
         /// <typeparam name="TResult">Return type</typeparam>
         /// <param name="site">Where send message</param>
         /// <returns></returns>
-        private Task<TResult> SendGetQuery<TResult>(string site)
+        private async Task<TResult> SendGetQuery<TResult>(string site)
         {
-            return Task.Run(async () =>
+            HttpResponseMessage response = null;
+            try
             {
-                HttpResponseMessage response = null;
-                try
-                {
-                    var cts = new CancellationTokenSource();
-                    cts.CancelAfter(TimeSpan.FromSeconds(30));
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(TimeSpan.FromSeconds(30));
 
-                    response = await http.GetAsync(site, cts.Token);
+                response = await http.GetAsync(site, cts.Token);
 
-                    response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
-                    var json = JsonSerializer.Deserialize<TResult>(await response.Content.ReadAsStringAsync());
+                var json = JsonSerializer.Deserialize<TResult>(await response.Content.ReadAsStringAsync());
 
-                    return json;
-                }
-                catch (HttpRequestException)
-                {
-                    throw new RuntimeException(await response?.Content.ReadAsStringAsync());
-                }
-                catch
-                {
-                    throw new RuntimeException();
-                }
-            });
+                return json;
+            }
+            catch (HttpRequestException)
+            {
+                throw new RuntimeException(await response?.Content.ReadAsStringAsync());
+            }
+            catch
+            {
+                throw new RuntimeException();
+            }
         }
     }
 }
