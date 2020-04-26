@@ -35,7 +35,7 @@ namespace SmartControl.Api.Server
         }
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        public void StartAsyncPing(Action<int> v)
+        public void StartAsyncPing(Func<int, Task> v)
         {
             NotifyFunctionCalled();
 
@@ -50,7 +50,7 @@ namespace SmartControl.Api.Server
                     await Task.Delay(10000, token);
                     file.WriteLine("Async Ping Send 1");
                     file.Flush();
-                    v.Invoke(1);
+                    await v.Invoke(1);
                 }
             }, token);
         }

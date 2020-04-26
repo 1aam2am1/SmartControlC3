@@ -23,7 +23,7 @@ namespace SmartControl
         readonly Lazy<CalendarView> calendar = new Lazy<CalendarView>(new CalendarView());
         readonly Lazy<ModesView> modes = new Lazy<ModesView>(new ModesView());
         readonly Lazy<ChartsView> charts = new Lazy<ChartsView>(new ChartsView());
-        readonly Lazy<WorkViews.SettingsView> settings = new Lazy<WorkViews.SettingsView>(new WorkViews.SettingsView());
+        readonly Lazy<SettingsView> settings = new Lazy<SettingsView>(new SettingsView());
         readonly Lazy<ServiceView> service = new Lazy<ServiceView>(new ServiceView());
         public WorkView()
         {

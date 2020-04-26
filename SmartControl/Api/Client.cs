@@ -65,7 +65,7 @@ namespace SmartControl.Api
 
         #region Internal
 
-        private async void PingAction(int action)
+        private async Task PingAction(int action)
         {
             try
             {

@@ -16,6 +16,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <Grid Background="White">
         <Expander Header="Server Settings" IsExpanded="{Binding ConnectSettingsEnabled, Mode=OneWay}" IsEnabled="{Binding ConnectSettingsEnabled}">
@@ -36,8 +38,9 @@
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Port, Mode=TwoWay}"/>
             </Grid>
         </Expander>
-        <Button Style="{StaticResource ImageButtonStyle}" Click="Button_Close_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0" Height="11">
-            <Image Source="/Assets/close@2x.png" Margin="0,0,0,0"/>
+        <Button Style="{StaticResource ImageButtonStyle}" Click="Button_Close_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0" Height="11"
+                IsEnabled="{Binding CloseEnabled}">
+            <Image Source="/Assets/close@2x.png" Margin="0,0,0,0" Visibility="{Binding CloseEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Button>
 
     </Grid>

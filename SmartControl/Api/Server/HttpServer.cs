@@ -124,7 +124,7 @@ namespace SmartControl.Api.Server
 
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        public void StartAsyncPing(Action<int> v)
+        public void StartAsyncPing(Func<int, Task> v)
         {
             cancellationTokenSource.Cancel();
 
@@ -147,14 +147,14 @@ namespace SmartControl.Api.Server
 
                         var json = JsonSerializer.Deserialize<StatusPingLowResponse>(message);
 
-                        v.Invoke(json.NoChange);
+                        await v.Invoke(json.NoChange);
                     }
                 }
                 finally
                 {
                     if (!token.IsCancellationRequested)
                     {
-                        v.Invoke(-1);
+                        await v.Invoke(-1);
                     }
                 }
             }, token);

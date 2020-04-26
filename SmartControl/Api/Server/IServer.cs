@@ -41,7 +41,7 @@ namespace SmartControl.Api.Server
         /// <see cref="ClosePingClient"/>
         /// -1 internal error
         /// </param>
-        public void StartAsyncPing(Action<int> v);
+        public void StartAsyncPing(Func<int, Task> v);
 
         /// <summary>
         /// Close Ping Client
