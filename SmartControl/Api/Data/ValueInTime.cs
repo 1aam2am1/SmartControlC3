@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartControl.Api.SQL;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -17,5 +18,14 @@ namespace SmartControl.Api.Data
         /// </summary>
         [JsonPropertyName("V")]
         public int Value { set; get; }
+
+        public static implicit operator ValueInTime(SqlValueInTime v)
+        {
+            return new ValueInTime
+            {
+                Time = (long)Math.Floor((v.SqlValueInTimeId - DateTime.UnixEpoch).TotalSeconds),
+                Value = v.Value
+            };
+        }
     }
 }
