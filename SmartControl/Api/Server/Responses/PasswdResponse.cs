@@ -11,6 +11,6 @@ namespace SmartControl.Api.Server.Responses
         public bool Authenticated { set; get; }
 
         [JsonPropertyName("user")]
-        public string User { set; get; }
+        public string User { set; get; } = "";
     }
 }

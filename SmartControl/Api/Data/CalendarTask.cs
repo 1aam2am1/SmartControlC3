@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SmartControl.Api.Data
 {
-    public class CalendarTask
+    public struct CalendarTask
     {
 
         /// <summary>

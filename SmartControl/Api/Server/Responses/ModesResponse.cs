@@ -15,6 +15,6 @@ namespace SmartControl.Api.Server.Responses
         /// 4. Holiday
         /// 5. Max Vent
         /// </summary>
-        public Dictionary<int, ModesStatus> Modes { set; get; }
+        public Dictionary<int, ModesStatus> Modes { set; get; } = new Dictionary<int, ModesStatus>();
     }
 }

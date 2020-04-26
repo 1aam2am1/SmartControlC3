@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace SmartControl.Api.Data
 {
-    public class ValueInTime
+    public struct ValueInTime
     {
         /// <summary>
         /// Time in seconds from 1.01.1970 UTC

@@ -15,6 +15,6 @@ namespace SmartControl.Api.Server.Responses
         /// Tasks.
         /// Limit 5 elements per day
         /// </summary>
-        public List<CalendarTask> Tasks { set; get; }
+        public List<CalendarTask> Tasks { set; get; } = new List<CalendarTask>();
     }
 }

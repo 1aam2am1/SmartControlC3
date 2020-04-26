@@ -11,7 +11,7 @@ namespace SmartControl.Api.Server.Queries
         /// <summary>
         /// List of parameters to get history to.
         /// </summary>
-        public ParameterQuery Parameter { set; get; }
+        public ParameterQuery Parameter { set; get; } = new ParameterQuery();
 
         /// <summary>
         /// From with date begin query

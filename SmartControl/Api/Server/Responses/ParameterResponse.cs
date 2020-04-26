@@ -6,6 +6,6 @@ namespace SmartControl.Api.Server.Responses
 {
     public class ParameterResponse
     {
-        public Dictionary<int, int> Parameters { set; get; }
+        public Dictionary<int, int> Parameters { set; get; } = new Dictionary<int, int>();
     }
 }

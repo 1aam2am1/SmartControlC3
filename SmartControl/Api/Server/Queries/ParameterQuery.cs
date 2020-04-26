@@ -6,6 +6,6 @@ namespace SmartControl.Api.Server.Queries
 {
     public class ParameterQuery
     {
-        public List<int> Parameter { set; get; }
+        public List<int> Parameter { set; get; } = new List<int>();
     }
 }

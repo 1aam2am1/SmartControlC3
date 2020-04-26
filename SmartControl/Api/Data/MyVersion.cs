@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace SmartControl.Api.Data
 {
     [JsonConverter(typeof(MyVersionConverter))]
-    public class MyVersion
+    public struct MyVersion
     {
         public int Major { set; get; }
         public int Minor { set; get; }
