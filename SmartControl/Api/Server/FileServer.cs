@@ -108,18 +108,19 @@ namespace SmartControl.Api.Server
             await Task.Delay(100);
 
             var result = new HistoryResponse();
-            TimeSpan interval = DateTime.Now - DateTime.UnixEpoch;
+
+            DateTimeOffset localTime = DateTime.UtcNow;
 
             result.Parameters = new Dictionary<int, List<ValueInTime>>
                 {
                     {34, new List<ValueInTime> {
-                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds), Value = 10},
-                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds) - 120, Value = 12},
+                        new ValueInTime{ Time = localTime.ToUnixTimeSeconds() - 120, Value = 10},
+                        new ValueInTime{ Time = localTime.ToUnixTimeSeconds(), Value = 12},
                         }
                     },
                     {35, new List<ValueInTime> {
-                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds), Value = 14},
-                        new ValueInTime{ Time = (long)Math.Floor(interval.TotalSeconds) - 60, Value = 20},
+                        new ValueInTime{ Time = localTime.ToUnixTimeSeconds() - 60, Value = 14},
+                        new ValueInTime{ Time = localTime.ToUnixTimeSeconds(), Value = 20},
                         }
                     }
                 };

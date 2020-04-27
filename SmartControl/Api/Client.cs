@@ -2,8 +2,11 @@
 using SmartControl.Api.Server;
 using SmartControl.Api.Server.Queries;
 using SmartControl.Api.Server.Responses;
+using SmartControl.Api.Server.SaveQueries;
+using SmartControl.Api.SQL;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,9 +21,17 @@ namespace SmartControl.Api
         /// </summary>
         //public Lazy<IServer> server = new Lazy<IServer>(new HttpServer());
         public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
+        Lazy<HistoryContext> history = new Lazy<HistoryContext>(new HistoryContext());
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly object locker = new object();
+
+        #region ToSendData
+        private readonly Dictionary<int, int> _Parameters = new Dictionary<int, int>();
+        private readonly Dictionary<DayOfWeek, List<CalendarTask>> _Task = new Dictionary<DayOfWeek, List<CalendarTask>>();
+        private CalendarSave _calendar;
+        private readonly Dictionary<int, ModesStatus> _Modes = new Dictionary<int, ModesStatus>();
+        #endregion
 
         /// <summary>
         /// Connect to server with given settings
@@ -63,6 +74,47 @@ namespace SmartControl.Api
             server.Value.ClosePingClient();
         }
 
+        #region Save
+
+        public void SaveParametersQueue(int p, int v)
+        {
+            lock (locker)
+            {
+                _Parameters[p] = v;
+            }
+        }
+
+        public void SaveCalendarQueue(bool Enabled, int ActiveDays, DateTime Date = new DateTime())
+        {
+            lock (locker)
+            {
+                _calendar = new CalendarSave
+                {
+                    Enabled = Enabled,
+                    ActiveDays = ActiveDays,
+                    Date = Date
+                };
+            }
+        }
+
+        public void SaveCalendarTaskQueue(DayOfWeek day, List<CalendarTask> tasks)
+        {
+            lock (locker)
+            {
+                _Task[day] = tasks;
+            }
+        }
+
+        public void AveModesQueue(int i, ModesStatus status)
+        {
+            lock (locker)
+            {
+                _Modes[i] = status;
+            }
+        }
+
+        #endregion
+
         #region Internal
 
         private async Task PingAction(int action)
@@ -73,7 +125,7 @@ namespace SmartControl.Api
                 {
                     case -1:
                         StopDataSynchronization();
-                        await Task.Delay(1000);
+                        await Task.Delay(3000);
                         StartDataSynchronization();
                         break;
                     case 0:
@@ -84,6 +136,7 @@ namespace SmartControl.Api
                         await ResolveStatusChange();
                         break;
                 }
+                await ResolveQuery();
             }
             catch (AggregateException e)
             {
@@ -109,7 +162,7 @@ namespace SmartControl.Api
             }
         }
 
-        public async Task ResolveStatusChange()
+        private async Task ResolveStatusChange()
         {
             var response = await server.Value.GetFullStatus();
             List<Task> waitfor = new List<Task>();
@@ -137,10 +190,10 @@ namespace SmartControl.Api
                 data.Work = response.Work;
             }
 
-            Task.WaitAll(waitfor.ToArray());
+            await Task.WhenAll(waitfor.ToArray());
         }
 
-        public async Task ResolveParametersChange()
+        private async Task ResolveParametersChange()
         {
             var query = new ParameterQuery();
             query.Parameter.AddRange(Enumerable.Range(0, 17));
@@ -154,7 +207,7 @@ namespace SmartControl.Api
             }
         }
 
-        public async Task ResolveCalendarChange()
+        private async Task ResolveCalendarChange()
         {
             List<Task> waitfor = new List<Task>();
 
@@ -175,10 +228,10 @@ namespace SmartControl.Api
                 data.CalEnabled = result.Enabled;
             }
 
-            Task.WaitAll(waitfor.ToArray());
+            await Task.WhenAll(waitfor.ToArray());
         }
 
-        public async Task ResolveTaskChange(DayOfWeek day)
+        private async Task ResolveTaskChange(DayOfWeek day)
         {
             var query = new CalendarDayQuery
             {
@@ -193,13 +246,179 @@ namespace SmartControl.Api
             }
         }
 
-        public async Task ResolveModChange()
+        private async Task ResolveModChange()
         {
             var result = await server.Value.GetModes();
 
             lock (locker)
             {
                 data.UpdateModes(result.Modes);
+            }
+        }
+
+        SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
+        public async Task ResolveQuery()
+        {
+            Dictionary<int, int> P;
+            Dictionary<DayOfWeek, List<CalendarTask>> T;
+            CalendarSave C;
+            Dictionary<int, ModesStatus> M;
+            List<Task> waitfor = new List<Task>();
+
+            await _semaphoreSlim.WaitAsync();
+            lock (locker)
+            {
+                P = _Parameters;
+                _Parameters.Clear();
+                T = _Task;
+                _Task.Clear();
+                C = _calendar;
+                _calendar = null;
+                M = _Modes;
+                _Modes.Clear();
+            }
+            try
+            {
+                if (P.Count != 0)
+                {
+                    waitfor.Add(ResolveParametersQuery(P));
+                }
+                if (T.Count != 0)
+                {
+                    waitfor.Add(ResolveTaskQuery(T));
+                }
+                if (C != null)
+                {
+                    waitfor.Add(ResolveCalendarQuery(C));
+                }
+                if (M.Count != 0)
+                {
+                    waitfor.Add(ResolveMod(M));
+                }
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
+
+            await Task.WhenAll(waitfor.ToArray());
+        }
+
+        private async Task ResolveParametersQuery(Dictionary<int, int> d)
+        {
+            var query = new ParameterSave
+            {
+                Parameters = d,
+            };
+
+            var response = await server.Value.SaveParameters(query);
+
+            switch (response.Result)
+            {
+                case OkStatus.Ok:
+                    lock (locker)
+                    {
+                        data.UpdateParameters(d);
+                    }
+                    break;
+                case OkStatus.Error:
+                    //something wrong
+                    break;
+                case OkStatus.NoPermission:
+                    //you dint have permission
+                    break;
+            }
+        }
+
+        private async Task ResolveTaskQuery(Dictionary<DayOfWeek, List<CalendarTask>> t)
+        {
+            List<Task> waitfor = new List<Task>();
+
+            foreach (var v in t)
+            {
+                var query = new CalendarDaySave
+                {
+                    Day = v.Key,
+                    Tasks = v.Value
+                };
+                waitfor.Add(Task.Run(async () =>
+                {
+                    var response = await server.Value.SaveDayTask(query);
+
+                    switch (response.Result)
+                    {
+                        case OkStatus.Ok:
+                            lock (locker)
+                            {
+                                data.UpdateTask(query.Day, query.Tasks);
+                            }
+                            break;
+                        case OkStatus.Error:
+                            //something wrong
+                            break;
+                        case OkStatus.NoPermission:
+                            //you dint have permission
+                            break;
+                    }
+                }));
+            }
+
+            await Task.WhenAll(waitfor.ToArray());
+        }
+
+        private async Task ResolveCalendarQuery(CalendarSave c)
+        {
+            var query = new CalendarSave
+            {
+                ActiveDays = c.ActiveDays,
+                Enabled = c.Enabled,
+                Date = c.Date
+            };
+
+            var response = await server.Value.SaveCalendar(query);
+
+            switch (response.Result)
+            {
+                case OkStatus.Ok:
+                    lock (locker)
+                    {
+                        data.ActiveDays = c.ActiveDays;
+                        data.CalEnabled = c.Enabled;
+                        data.CalDate = c.Date;
+                    }
+                    break;
+                case OkStatus.Error:
+                    //something wrong
+                    break;
+                case OkStatus.NoPermission:
+                    //you dint have permission
+                    break;
+            }
+        }
+
+        private async Task ResolveMod(Dictionary<int, ModesStatus> m)
+        {
+            var query = new ModesSave
+            {
+                Modes = m
+            };
+
+            var response = await server.Value.SaveModes(query);
+
+            switch (response.Result)
+            {
+                case OkStatus.Ok:
+                    lock (locker)
+                    {
+                        data.UpdateModes(m);
+                    }
+                    break;
+                case OkStatus.Error:
+                    //something wrong
+                    break;
+                case OkStatus.NoPermission:
+                    //you dint have permission
+                    break;
             }
         }
 

@@ -17,7 +17,7 @@ namespace SmartControl.Api.SQL
         {
             return new SqlValueInTime
             {
-                SqlValueInTimeId = DateTime.UnixEpoch.AddSeconds(v.Time),
+                SqlValueInTimeId = DateTimeOffset.FromUnixTimeSeconds(v.Time).UtcDateTime,
                 Value = v.Value
             };
         }

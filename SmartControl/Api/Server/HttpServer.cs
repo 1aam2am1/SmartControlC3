@@ -136,6 +136,8 @@ namespace SmartControl.Api.Server
                 {
                     var response = await http.GetAsync(statusPingSite, HttpCompletionOption.ResponseHeadersRead, token);
 
+                    if (token.IsCancellationRequested) { throw new RuntimeException(); }
+
                     response.EnsureSuccessStatusCode();
 
                     using var body = await response.Content.ReadAsStreamAsync();
@@ -149,6 +151,10 @@ namespace SmartControl.Api.Server
 
                         await v.Invoke(json.NoChange);
                     }
+                }
+                catch
+                {
+
                 }
                 finally
                 {

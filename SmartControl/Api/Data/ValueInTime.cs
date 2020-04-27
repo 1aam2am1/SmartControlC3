@@ -21,9 +21,11 @@ namespace SmartControl.Api.Data
 
         public static implicit operator ValueInTime(SqlValueInTime v)
         {
+            DateTimeOffset localTime = DateTime.SpecifyKind(v.SqlValueInTimeId, DateTimeKind.Utc);
+
             return new ValueInTime
             {
-                Time = (long)Math.Floor((v.SqlValueInTimeId - DateTime.UnixEpoch).TotalSeconds),
+                Time = localTime.ToUnixTimeSeconds(),
                 Value = v.Value
             };
         }
