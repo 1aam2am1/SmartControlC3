@@ -36,6 +36,10 @@ namespace SmartControl.Api.SQL
                 .IsRequired();
 
             modelBuilder.Entity<SqlTimePeriod>()
+                .Property(v => v.SqlParameterId)
+                .IsRequired();
+
+            modelBuilder.Entity<SqlTimePeriod>()
                 .Property(v => v.Begining)
                 .HasConversion(converter);
 

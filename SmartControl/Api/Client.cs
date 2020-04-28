@@ -1,4 +1,5 @@
-﻿using SmartControl.Api.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartControl.Api.Data;
 using SmartControl.Api.Server;
 using SmartControl.Api.Server.Queries;
 using SmartControl.Api.Server.Responses;
@@ -21,7 +22,7 @@ namespace SmartControl.Api
         /// </summary>
         //public Lazy<IServer> server = new Lazy<IServer>(new HttpServer());
         public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
-        Lazy<HistoryContext> history = new Lazy<HistoryContext>(new HistoryContext());
+        readonly Lazy<HistoryContext> history = new Lazy<HistoryContext>(new HistoryContext());
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly object locker = new object();
@@ -60,6 +61,146 @@ namespace SmartControl.Api
         {
             return data;
         }
+
+        public HistoryData GetHistoricalData(List<int> vs, TimePeriod period)
+        {
+            var result = new HistoryData();
+
+            foreach (var i in vs)
+            {
+                ParameterHistoryData(i, period, result);
+            }
+
+
+            return result;
+        }
+
+        #region History
+
+        SemaphoreSlim _semaphoreHistory = new SemaphoreSlim(1);
+        private async void ParameterHistoryData(int key, TimePeriod period, HistoryData loaded)
+        {
+            var periods = await history.Value.TimePeriods.Where(p => p.SqlParameterId == key)
+                .Where(p =>
+                 (p.Begining >= period.Begining && p.Begining <= period.End) ||
+                 (p.End >= period.Begining && p.End <= period.End))
+            .OrderBy(p => p.Begining).ToListAsync();
+
+
+            List<Task> waitfor = new List<Task>();
+
+            TimePeriod timePeriod = period;
+            foreach (var p in periods)
+            {
+                if (timePeriod.Begining <= p.Begining)
+                {
+                    TimePeriod r = new TimePeriod();
+
+                    r.Begining = timePeriod.Begining;
+                    r.End = p.Begining;
+                    if (timePeriod.End <= p.End)
+                    {
+                        timePeriod.Begining = timePeriod.End;
+                    }
+                    else
+                    {
+                        timePeriod.Begining = p.End;
+                    }
+
+                    waitfor.Add(GetHistoryDataFromServerAndSave(key, r, loaded));
+                }
+                else
+                {
+                    if (timePeriod.End <= p.End)
+                    {
+                        timePeriod.Begining = timePeriod.End;
+                    }
+                    else
+                    {
+                        timePeriod.Begining = p.End;
+                    }
+                }
+            }
+            if (timePeriod.Begining != timePeriod.End)
+            {
+                waitfor.Add(GetHistoryDataFromServerAndSave(key, timePeriod, loaded));
+            }
+
+            {
+                var saved = await history.Value.Values.Where(p => p.SqlParameterId == key)
+                    .Where(p =>
+                     (p.SqlValueInTimeId >= period.Begining && p.SqlValueInTimeId <= period.End))
+                    .OrderBy(p => p.SqlValueInTimeId)
+                .Select(p => (ValueInTime)p).ToListAsync();
+
+                lock (locker)
+                {
+                    loaded.UpdateTarameters(key, saved);
+                }
+            }
+
+            await Task.WhenAll(waitfor.ToArray());
+
+            await _semaphoreHistory.WaitAsync();
+            try
+            {
+                SqlTimePeriod save = new SqlTimePeriod
+                {
+                    Begining = period.Begining,
+                    End = period.End,
+                    SqlParameterId = key
+                };
+                if (periods.Count >= 1 && periods.First().Begining < save.Begining)
+                {
+                    save.Begining = periods.First().Begining;
+                }
+                if (periods.Count >= 1 && periods.First().End > save.End)
+                {
+                    save.End = periods.First().End;
+                }
+
+                history.Value.TimePeriods.RemoveRange(periods);
+                history.Value.TimePeriods.Add(save);
+            }
+            finally
+            {
+                lock (locker)
+                {
+                    history.Value.SaveChanges();
+                }
+
+                _semaphoreHistory.Release(1);
+            }
+        }
+
+
+        private async Task GetHistoryDataFromServerAndSave(int key, TimePeriod period, HistoryData loaded)
+        {
+            var query = new HistoryQuery
+            {
+                Begining = period.Begining,
+                End = period.End,
+                Parameter = new List<int> { key },
+            };
+
+            var result = await server.Value.GetHistoricalData(query);
+
+            lock (locker)
+            {
+                loaded.UpdateParameters(result.Parameters);
+            }
+
+            foreach (var v in result.Parameters)
+            {
+                foreach (var k in v.Value)
+                {
+                    history.Value.Values.Add(k);
+                }
+            }
+        }
+
+
+        #endregion
 
         /// <summary>
         /// Function start data synchronization with connected device.

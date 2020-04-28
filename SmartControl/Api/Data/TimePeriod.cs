@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace SmartControl.Api.SQL
+namespace SmartControl.Api.Data
 {
-    public class SqlTimePeriod
+    public struct TimePeriod
     {
-        /// <summary>
-        /// Id of parameter that this period concerns
-        /// </summary>
-        [ForeignKey("SqlParameter")]
-        public int SqlParameterId { get; set; }
-
         /// <summary>
         /// Period begin
         /// </summary>
