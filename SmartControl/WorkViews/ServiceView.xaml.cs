@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartControl.Api;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,11 @@ namespace SmartControl.WorkViews
         public ServiceView()
         {
             InitializeComponent();
+        }
+
+        public void SetClient(IClient c)
+        {
+
         }
     }
 }

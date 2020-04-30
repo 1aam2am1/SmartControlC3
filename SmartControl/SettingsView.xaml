@@ -6,19 +6,6 @@
              xmlns:local="clr-namespace:SmartControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <Style TargetType="{x:Type Button}" x:Key="ImageButtonStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <ContentPresenter/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
     <Grid Background="White">
         <Expander Header="Server Settings" IsExpanded="{Binding ConnectSettingsEnabled, Mode=OneWay}" IsEnabled="{Binding ConnectSettingsEnabled}">
             <Grid>

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SmartControl.Api
 {
-    public class Client
+    public class Client : IClient
     {
         /// <summary>
         /// What server to use to communicate with device
@@ -246,7 +246,7 @@ namespace SmartControl.Api
             }
         }
 
-        public void AveModesQueue(int i, ModesStatus status)
+        public void SaveModesQueue(int i, ModesStatus status)
         {
             lock (locker)
             {

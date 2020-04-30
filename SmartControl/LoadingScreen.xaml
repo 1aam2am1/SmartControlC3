@@ -7,10 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="280" d:DesignWidth="450">
 
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
-
     <Grid Name="MainGrid" Background="White" Height="210" MinWidth="280">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>

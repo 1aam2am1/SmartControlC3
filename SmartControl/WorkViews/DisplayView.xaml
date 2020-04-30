@@ -4,9 +4,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SmartControl.WorkViews"
+             xmlns:mini="clr-namespace:SmartControl.WorkViews.Mini"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Gray" MinWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Margin="0,0,0,0">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ProgressBar}" x:Key="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid x:Name="TemplateRoot">
+                            <Image Name="PART_Track" Source="/Assets/level@2x.png" Stretch="Uniform"/>
+                            <Grid Name="PART_Indicator" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Rectangle HorizontalAlignment="Left" Width="{Binding ActualWidth,ElementName=PART_Track}" Height="{Binding ActualHeight,ElementName=PART_Track}">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource="/Assets/level-max@2x.png" Stretch="Uniform"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="LayoutTransform" TargetName="TemplateRoot">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style TargetType="{x:Type TextBox}" x:Key="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                        <Border Name="Border"
+                CornerRadius="{Binding ActualHeight, ElementName=Border, Converter={StaticResource MathConverter}, ConverterParameter=x/2}"
+                BorderThickness="0" Padding="5,0,5,0">
+                            <Border.Background>
+                                <SolidColorBrush Color="White" />
+                            </Border.Background>
+                            <ScrollViewer Margin="0"
+                        x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="Gray" MinHeight="450">
         <Grid.RowDefinitions>
             <RowDefinition Height="30*"/>
             <RowDefinition Height="12*"/>
@@ -18,10 +68,161 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="1">
-            
+        <Grid Grid.Row="0" Grid.Column="1" x:Name="Main">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Power -->
+            <Grid Grid.Row="0" Margin="0,10,0,10" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="1" Height="26" Source="/Assets/plug@2x.png"/>
+                <TextBlock Grid.Column="2" Text="Pobór mocy" Foreground="WhiteSmoke" VerticalAlignment="Center" 
+                           FontSize="20" Margin="10,0,10,0"/>
+                <mini:TextSuffix Grid.Column="3" Text="{Binding Power, Mode=OneWay}" 
+                         Width="120" Suffix="W"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- CZERPNIA -->
+                <Border Grid.Row="0" Grid.Column="0" BorderThickness="0 0 0 1" Margin="0,0,10,0" BorderBrush="DarkGray"/>
+                <mini:Fan Grid.Row="0" Grid.Column="0" DataContext="{Binding Intake, Mode=OneWay}"/>
+
+                <!-- Wyrzutnia -->
+                <mini:Fan Grid.Row="1" Grid.Column="0" DataContext="{Binding Launch, Mode=OneWay}"/>
+
+                <!-- Big -->
+                <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" MinWidth="300">
+                        <Grid.Background>
+                            <ImageBrush ImageSource="/Assets/center-gfx@2x.png" Stretch="Uniform"/>
+                        </Grid.Background>
+
+                        <Border Grid.Column="0" Grid.ColumnSpan="2" x:Name="Border"
+                CornerRadius="{Binding ActualHeight, ElementName=Border, Converter={StaticResource MathConverter}, ConverterParameter=x/2}"
+                BorderThickness="0" Padding="5,5,5,5"
+            DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Border.Background>
+                                <SolidColorBrush Color="White" />
+                            </Border.Background>
+                            <DockPanel >
+                                <TextBlock DockPanel.Dock="Left" Text="Odzysk" Foreground="Gray" 
+                                   FontSize="14" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock Foreground="Black" Text="{Binding Recovered, StringFormat={}{0}%, Mode=OneWay}"
+                                   FontSize="14" HorizontalAlignment="Center"/>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Margin="0,-50,0,10" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">
+                            <Image DockPanel.Dock="Top" Source="/Assets/fan@2x.png" Height="30"/>
+                            <TextBlock Text="Wentylator 1" Foreground="White" FontSize="12"/>
+                        </DockPanel>
+
+                        <DockPanel Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center">
+                            <Image DockPanel.Dock="Top" Source="/Assets/fan@2x.png" Height="30"/>
+                            <TextBlock Text="Wentylator 2" Foreground="White" FontSize="12"/>
+                        </DockPanel>
+
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Moc" Foreground="White" 
+                                   FontSize="16" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="Obroty" Foreground="White" 
+                                   FontSize="16" HorizontalAlignment="Center" Margin="10,0,10,1"/>
+
+
+                        <mini:NumericText Grid.Row="1" Grid.Column="0" Suffix="%" Margin="0,5,0,5"/>
+                        <mini:NumericText Grid.Row="2" Grid.Column="0" Suffix="Rpm" ButtonsVisible="False" 
+                                          IsReadOnly="True" Margin="0,0,0,5"/>
+
+
+                        <mini:NumericText Grid.Row="1" Grid.Column="3" Suffix="%" Margin="0,5,0,5"/>
+                        <mini:NumericText Grid.Row="2" Grid.Column="3" Suffix="Rpm" ButtonsVisible="False" 
+                                          IsReadOnly="True" Margin="0,0,0,5"/>
+                    </Grid>
+                </Grid>
+
+                <!-- Wywiew -->
+                <Border Grid.Row="0" Grid.Column="3" BorderThickness="0 0 0 1" Margin="10,0,0,0" BorderBrush="DarkGray"/>
+                <mini:Fan Grid.Row="0" Grid.Column="3" DataContext="{Binding Extract, Mode=OneWay}"/>
+
+                <!-- Nawiew -->
+                <mini:Fan Grid.Row="1" Grid.Column="3" DataContext="{Binding Suplay, Mode=OneWay}"/>
+            </Grid>
         </Grid>
 
+        <!-- Filter -->
         <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Fill="White"/>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Filtr nawiewny" Foreground="Gray" HorizontalAlignment="Right" FontSize="20"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Poziom zabrudzenia filtra" Foreground="Gray" HorizontalAlignment="Right" FontSize="12"/>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="{Binding FilterOne, StringFormat={}{0}%, Mode=OneWay}" Foreground="Black" HorizontalAlignment="Right" FontSize="20"/>
+            <DockPanel Grid.Column="0" Grid.Row="4" Visibility="{Binding FilterOne, Converter={StaticResource ValueIfToVisibilityConverter}, ConverterParameter=45}">
+                <TextBlock DockPanel.Dock="Right" Text=" Zbiża się termin wymiany filtra" Foreground="Red" HorizontalAlignment="Right" FontSize="12"/>
+                <Image DockPanel.Dock="Right" Height="11" Source="/Assets/danger@2x.png" Margin="0,0,0,0" HorizontalAlignment="Right"/>
+            </DockPanel>
+
+            <ProgressBar Grid.Column="1" Grid.Row="0" Grid.RowSpan="6" Orientation="Vertical" Value="{Binding FilterOne, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="60" Margin="0,20,20,20"/>
+
+            <TextBlock Grid.Column="3" Grid.Row="1" Text="Filtr wywiewny" Foreground="Gray" HorizontalAlignment="Left" FontSize="20"/>
+            <TextBlock Grid.Column="3" Grid.Row="2" Text="Poziom zabrudzenia filtra" Foreground="Gray" HorizontalAlignment="Left" FontSize="12"/>
+            <TextBlock Grid.Column="3" Grid.Row="3" Text="{Binding FilterTwo, StringFormat={}{0}%, Mode=OneWay}" Foreground="Black" HorizontalAlignment="Left" FontSize="20"/>
+            <DockPanel Grid.Column="3" Grid.Row="4" Visibility="{Binding FilterTwo, Converter={StaticResource ValueIfToVisibilityConverter}, ConverterParameter=45}" HorizontalAlignment="Left">
+                <Image DockPanel.Dock="Left" Height="11" Source="/Assets/danger@2x.png" Margin="0,0,0,0"/>
+                <TextBlock Text=" Zbiża się termin wymiany filtra" Foreground="Red" HorizontalAlignment="Right" FontSize="12"/>
+            </DockPanel>
+
+            <ProgressBar Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" Orientation="Vertical" Value="{Binding FilterTwo, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="60" Margin="20,20,0,20"/>
+        </Grid>
     </Grid>
 </UserControl>

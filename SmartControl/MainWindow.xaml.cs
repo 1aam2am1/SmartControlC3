@@ -57,7 +57,11 @@ namespace SmartControl
                 {
                     MyUserSettings.Instance.Save(credentials);
 
-                    DataContext = new WorkView();
+                    var work = new WorkView();
+                    work.SetClient(client);
+
+                    DataContext = work;
+
 
                     client.StartDataSynchronization();
                 }

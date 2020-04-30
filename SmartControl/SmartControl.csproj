@@ -9,9 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\center-gfx%402x.png" />
     <None Remove="Assets\close%402x.png" />
+    <None Remove="Assets\danger%402x.png" />
+    <None Remove="Assets\drop%402x.png" />
     <None Remove="Assets\fan%402x.png" />
+    <None Remove="Assets\level%402x.png" />
+    <None Remove="Assets\level-max%402x.png" />
     <None Remove="Assets\logo%402x.png" />
+    <None Remove="Assets\minus%402x.png" />
+    <None Remove="Assets\plug%402x.png" />
+    <None Remove="Assets\plus%402x.png" />
+    <None Remove="Assets\thermometer%402x.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,9 +32,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\center-gfx@2x.png" />
     <Resource Include="Assets\close@2x.png" />
+    <Resource Include="Assets\danger@2x.png" />
+    <Resource Include="Assets\drop@2x.png" />
     <Resource Include="Assets\fan@2x.png" />
+    <Resource Include="Assets\level-max%402x.png" />
+    <Resource Include="Assets\level@2x.png" />
     <Resource Include="Assets\logo@2x.png" />
+    <Resource Include="Assets\minus@2x.png" />
+    <Resource Include="Assets\plug@2x.png" />
+    <Resource Include="Assets\plus@2x.png" />
+    <Resource Include="Assets\thermometer@2x.png" />
   </ItemGroup>
 
 </Project>

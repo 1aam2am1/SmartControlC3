@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace SmartControl.WorkViews
 {
     /// <summary>
-    /// Interaction logic for ChartsView.xaml
+    /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class ChartsView : UserControl
+    public partial class SettingsView : UserControl
     {
-        public ChartsView()
+        public SettingsView()
         {
             InitializeComponent();
         }
