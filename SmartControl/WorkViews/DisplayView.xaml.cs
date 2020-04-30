@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -23,42 +24,80 @@ namespace SmartControl.WorkViews
     public partial class DisplayView : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private IClient client;
 
-
-        int _Power = 19;
-        public int Power
+        public ReadOnlyDictionary<int, int> Parameters
         {
-            get => _Power;
+            get => client?.GetDataManager().Parameters;
             set
             {
-                _Power = value;
-                NotifyPropertyChanged();
+                foreach (var v in value)
+                {
+                    client?.SaveParametersQueue(v.Key, v.Value);
+                }
+            }
+        }
+
+
+        public int Power
+        {
+            get
+            {
+                int[] heater = { 42, 43 };
+                int[] fan = { 27, 29 };
+                int result = 0;
+                foreach (var i in heater)
+                {
+                    Parameters.TryGetValue(i, out int value);
+                    result += value * 10;
+                }
+                foreach (var i in fan)
+                {
+                    Parameters.TryGetValue(i, out int value);
+                    result += (int)PowerFromFan(value);
+                }
+
+
+                return result + 5;
             }
         }
 
         public int Recovered
         {
-            get => 20;
+            get { Parameters.TryGetValue(37, out int value); return value; }
         }
 
-        public Fan Intake
+        public int Humidity1
         {
-            get => new Fan("Czerpnia");
+            get { Parameters.TryGetValue(26, out int value); return value; }
+            set
+            {
+                client?.SaveParametersQueue(26, value);
+            }
         }
-
-        public Fan Launch
+        public int Rpm1
         {
-            get => new Fan("Wyrzutnia");
+            get { Parameters.TryGetValue(27, out int value); return value; }
+            set
+            {
+                client?.SaveParametersQueue(27, value);
+            }
         }
-
-        public Fan Extract
+        public int Humidity2
         {
-            get => new Fan("Wywiew");
+            get { Parameters.TryGetValue(28, out int value); return value; }
+            set
+            {
+                client?.SaveParametersQueue(28, value);
+            }
         }
-
-        public Fan Suplay
+        public int Rpm2
         {
-            get => new Fan("Nawiew");
+            get { Parameters.TryGetValue(29, out int value); return value; }
+            set
+            {
+                client?.SaveParametersQueue(29, value);
+            }
         }
 
         public int FilterOne
@@ -78,16 +117,38 @@ namespace SmartControl.WorkViews
 
         public void SetClient(IClient c)
         {
+            if (client != null)
+            {
+                client.GetDataManager().PropertyChanged -= OnChange;
+            }
+            client = c;
+            if (client != null)
+            {
+                client.GetDataManager().PropertyChanged += OnChange;
+            }
 
+            NotifyPropertyChanged();
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        void OnChange(object sender, PropertyChangedEventArgs e)
         {
-            Power += 1;
+            NotifyPropertyChanged("");
         }
 
         void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        static double PowerFromFan(long speed)
+        {
+            if (speed == 0) { return 0; }
+
+            double result = 0;
+            result = Math.Pow(speed, 2) * (0.00000000280730835942661 * speed - 0.00000355746926477736) +
+                     0.00732582964032312 * speed - 0.759107715961406;
+            ///= 0,00000000280730835942661x3 - 0,00000355746926477736000x2 + 0,00732582964032312000000x - 0,75910771596140600000000
+            return result;
         }
     }
 }

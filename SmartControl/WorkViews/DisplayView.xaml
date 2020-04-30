@@ -104,10 +104,12 @@
 
                 <!-- CZERPNIA -->
                 <Border Grid.Row="0" Grid.Column="0" BorderThickness="0 0 0 1" Margin="0,0,10,0" BorderBrush="DarkGray"/>
-                <mini:Fan Grid.Row="0" Grid.Column="0" DataContext="{Binding Intake, Mode=OneWay}"/>
+                <mini:Fan Grid.Row="0" Grid.Column="0" Description="Czerpnia" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                          TempId="20" WaterId="35" PMId="42"/>
 
                 <!-- Wyrzutnia -->
-                <mini:Fan Grid.Row="1" Grid.Column="0" DataContext="{Binding Launch, Mode=OneWay}"/>
+                <mini:Fan Grid.Row="1" Grid.Column="0"  Description="Wyrzutnia" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                          TempId="22" WaterId="36"/>
 
                 <!-- Big -->
                 <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
@@ -166,23 +168,29 @@
                                    FontSize="16" HorizontalAlignment="Center" Margin="10,0,10,1"/>
 
 
-                        <mini:NumericText Grid.Row="1" Grid.Column="0" Suffix="%" Margin="0,5,0,5"/>
+                        <mini:NumericText Grid.Row="1" Grid.Column="0" Suffix="%" Margin="0,5,0,5" 
+                                          Text="{Binding Humidity1, Mode=TwoWay}"/>
                         <mini:NumericText Grid.Row="2" Grid.Column="0" Suffix="Rpm" ButtonsVisible="False" 
-                                          IsReadOnly="True" Margin="0,0,0,5"/>
+                                          IsReadOnly="True" Margin="0,0,0,5"
+                                          Text="{Binding Rpm1, Mode=TwoWay}"/>
 
 
-                        <mini:NumericText Grid.Row="1" Grid.Column="3" Suffix="%" Margin="0,5,0,5"/>
+                        <mini:NumericText Grid.Row="1" Grid.Column="3" Suffix="%" Margin="0,5,0,5"
+                                          Text="{Binding Humidity2, Mode=TwoWay}"/>
                         <mini:NumericText Grid.Row="2" Grid.Column="3" Suffix="Rpm" ButtonsVisible="False" 
-                                          IsReadOnly="True" Margin="0,0,0,5"/>
+                                          IsReadOnly="True" Margin="0,0,0,5"
+                                          Text="{Binding Rpm2, Mode=TwoWay}"/>
                     </Grid>
                 </Grid>
 
                 <!-- Wywiew -->
                 <Border Grid.Row="0" Grid.Column="3" BorderThickness="0 0 0 1" Margin="10,0,0,0" BorderBrush="DarkGray"/>
-                <mini:Fan Grid.Row="0" Grid.Column="3" DataContext="{Binding Extract, Mode=OneWay}"/>
+                <mini:Fan Grid.Row="0" Grid.Column="3" Description="Wywiew" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                          TempId="21" WaterId="34" PMId="43"/>
 
                 <!-- Nawiew -->
-                <mini:Fan Grid.Row="1" Grid.Column="3" DataContext="{Binding Suplay, Mode=OneWay}"/>
+                <mini:Fan Grid.Row="1" Grid.Column="3"  Description="Nawiew" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                          TempId="23" WaterId="33"/>
             </Grid>
         </Grid>
 

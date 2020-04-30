@@ -33,7 +33,7 @@ namespace SmartControl
             InitializeComponent();
         }
 
-        public void setConnectSettings(ConnectSettings s)
+        public void SetConnectSettings(ConnectSettings s)
         {
             settings = s;
         }

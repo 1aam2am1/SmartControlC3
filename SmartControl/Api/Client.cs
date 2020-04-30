@@ -24,7 +24,6 @@ namespace SmartControl.Api
         public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
         readonly Lazy<HistoryContext> history = new Lazy<HistoryContext>(new HistoryContext());
 
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly object locker = new object();
 
         #region ToSendData
@@ -44,7 +43,7 @@ namespace SmartControl.Api
         {
             try
             {
-                cancellationTokenSource.Cancel();
+                StopDataSynchronization();
                 var task = await server.Value.Auth(s, i);
                 //wait for it to end without blocking the main thread
 
@@ -216,7 +215,7 @@ namespace SmartControl.Api
         }
 
         #region Save
-
+        //TODO: Set parameters to display them
         public void SaveParametersQueue(int p, int v)
         {
             lock (locker)
@@ -457,6 +456,7 @@ namespace SmartControl.Api
             switch (response.Result)
             {
                 case OkStatus.Ok:
+                    ///TODO: When wrong set should load new data true
                     lock (locker)
                     {
                         data.UpdateParameters(d);

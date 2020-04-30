@@ -123,10 +123,11 @@ namespace SmartControl.Api.Server
         }
 
 
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         public void StartAsyncPing(Func<int, Task> v)
         {
             cancellationTokenSource.Cancel();
+            cancellationTokenSource = new CancellationTokenSource();
 
             var token = cancellationTokenSource.Token;
 

@@ -34,17 +34,19 @@ namespace SmartControl.Api.Server
             return false;
         }
 
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         public void StartAsyncPing(Func<int, Task> v)
         {
             NotifyFunctionCalled();
 
             cancellationTokenSource.Cancel();
+            cancellationTokenSource = new CancellationTokenSource();
 
             var token = cancellationTokenSource.Token;
 
             Task.Run(async () =>
             {
+                NotifyFunctionCalled("Task.Run(async () =>");
                 while (token.IsCancellationRequested == false)
                 {
                     await Task.Delay(10000, token);
@@ -92,7 +94,8 @@ namespace SmartControl.Api.Server
             result.ByPass = false;
             result.Errors = 0;
             result.BateryLow = false;
-            result.ChangedParameters = new Random().NextDouble() > 0.5;
+            //result.ChangedParameters = new Random().NextDouble() > 0.5;
+            result.ChangedParameters = true;
             result.ChangedCalendar = new Random().NextDouble() > 0.5;
             result.ChangedMod = new Random().NextDouble() > 0.5;
 
@@ -155,19 +158,11 @@ namespace SmartControl.Api.Server
             await Task.Delay(100);
 
             var result = new ParameterResponse();
-            result.Parameters = new Dictionary<int, int>
-                {
-                    {0, 20},
-                    {1, 10},
-                    {2, 16},
-                    {3, 18},
-                    {4, 36},
-                    {5, 30},
-                    {6, 60},
-                    {7, 100},
-                    {8, 120},
-                    {9, 24}
-                };
+            var engine = new Random();
+            foreach (var v in parameter.Parameter)
+            {
+                result.Parameters[v] = engine.Next(0, 100);
+            }
 
             return result;
         }

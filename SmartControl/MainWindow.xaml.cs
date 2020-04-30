@@ -76,7 +76,7 @@ namespace SmartControl
         void OnSettingsChange()
         {
             SettingsView settings = new SettingsView();
-            settings.setConnectSettings(this.settings);
+            settings.SetConnectSettings(this.settings);
             settings.OnSettingsClose += OnSettingsClose;
 
             DataContext = settings;
