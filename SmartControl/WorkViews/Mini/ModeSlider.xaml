@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="SmartControl.WorkViews.Mini.ModeSlider"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SmartControl.WorkViews.Mini"
+             mc:Ignorable="d" 
+             d:DesignHeight="75" d:DesignWidth="200">
+    <Grid MinHeight="60"
+        DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Description}" 
+                       Foreground="White" FontSize="16"/>
+            <local:NumericText ButtonsVisible="False" VerticalAlignment="Center"
+                           Text="{Binding V, Mode=TwoWay}" Suffix="{Binding Suffix}" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+        </Grid>
+        <DockPanel Grid.Row="1">
+            <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                      IsChecked="{Binding E}" Width="15" Height="15" Margin="5,0,5,0" 
+                      Visibility="{Binding CheckBoxVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding Minimum, Mode=OneWay}" 
+                       Foreground="White" FontSize="14" HorizontalAlignment="Left"/>
+
+            <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Text="{Binding Maximum, Mode=OneWay}" 
+                       Foreground="White" FontSize="14" HorizontalAlignment="Right"/>
+
+            <Slider VerticalAlignment="Center" Value="{Binding V}" Minimum="{Binding Minimum}" 
+                    Maximum="{Binding Maximum}" Margin="5,5,5,5"/>
+        </DockPanel>
+    </Grid>
+</UserControl>

@@ -19,7 +19,7 @@ namespace SmartControl.WorkViews.Mini
     public partial class NumericText : UserControl
     {
         public static readonly DependencyProperty TextProperty =
-                    DependencyProperty.Register("Text", typeof(int), typeof(NumericText));
+                    DependencyProperty.Register("Text", typeof(string), typeof(NumericText));
 
         public static readonly DependencyProperty IsReadOnlyProperty =
                     DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(NumericText), new FrameworkPropertyMetadata(false));
@@ -43,7 +43,7 @@ namespace SmartControl.WorkViews.Mini
             {
                 try
                 {
-                    SetValue(TextProperty, int.Parse(value));
+                    SetValue(TextProperty, int.Parse(value).ToString());
                 }
                 catch
                 {
@@ -98,13 +98,13 @@ namespace SmartControl.WorkViews.Mini
         {
             try
             {
-                int value = int.Parse(T.Text);
+                int value = int.Parse(Text);
 
-                SetValue(TextProperty, value - 1);
+                SetValue(TextProperty, (value - 1).ToString());
             }
             catch
             {
-                SetValue(TextProperty, 0);
+                SetValue(TextProperty, "0");
             }
         }
 
@@ -112,13 +112,13 @@ namespace SmartControl.WorkViews.Mini
         {
             try
             {
-                int value = int.Parse(T.Text);
+                int value = int.Parse(Text);
 
-                SetValue(TextProperty, value + 1);
+                SetValue(TextProperty, (value + 1).ToString());
             }
             catch
             {
-                SetValue(TextProperty, 0);
+                SetValue(TextProperty, "0");
             }
         }
     }

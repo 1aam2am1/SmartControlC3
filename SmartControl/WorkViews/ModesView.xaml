@@ -3,10 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SmartControl.WorkViews"
+             xmlns:local="clr-namespace:SmartControl.WorkViews" 
+             xmlns:mini="clr-namespace:SmartControl.WorkViews.Mini"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="500" d:DesignWidth="700">
+    <Grid Background="Gray" MinHeight="450">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="12*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="700"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="1" x:Name="Main">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <mini:ModeSlider Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" 
+                             Description="Tryb Boost" Suffix="m"/>
+            <mini:ModeSlider Grid.Row="1" Grid.Column="0" Margin="0,0,5,0" 
+                             Description="Wietrzenie" Suffix="h"/>
+            <mini:ModeSlider Grid.Row="2" Grid.Column="0" Margin="0,0,5,0" 
+                             Description="Sen" Suffix="h"/>
+            <mini:ModeSlider Grid.Row="3" Grid.Column="0" Margin="0,0,5,0" 
+                             Description="Kominek" Suffix="m"/>
+
+            <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" BorderThickness="0 0 1 0" Margin="0,0,0,0" BorderBrush="DarkGray"/>
             
+            <mini:ModeSlider Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" 
+                             Description="Ograniczenie wydajności centrali" Suffix="%"/>
+            <mini:ModeSlider Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" 
+                             Description="Ograniczenie wentylatora nawiewnego" Suffix="%"
+                             CheckBoxVisible="False"/>
+            <mini:ModeSlider Grid.Row="2" Grid.Column="1" Margin="5,0,0,0" 
+                             Description="Ograniczenie wentylatora wywiewnego" Suffix="%"
+                             CheckBoxVisible="False"/>
+        </Grid>
+
+        <!-- Software -->
+        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Fill="White"/>
+        <Grid Grid.Row="1" Grid.Column="1">
+        </Grid>
     </Grid>
 </UserControl>
