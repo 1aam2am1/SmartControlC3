@@ -140,11 +140,11 @@ namespace SmartControl.Api.Server
             var result = new ModesResponse();
             result.Modes = new Dictionary<int, ModesStatus>
                 {
-                    {1, new ModesStatus{ Active = true, Value = 50} },
-                    {2, new ModesStatus{ Active = false, Value = 60} },
-                    {3, new ModesStatus{ Active = false, Value = 0} },
-                    {4, new ModesStatus{ Active = true, Value = 0} },
-                    {5, new ModesStatus{ Active = false, Value = 20} }
+                    {0, new ModesStatus{ Active = true, Value = 50} },
+                    {1, new ModesStatus{ Active = false, Value = 60} },
+                    {2, new ModesStatus{ Active = false, Value = 0} },
+                    {3, new ModesStatus{ Active = true, Value = 0} },
+                    {4, new ModesStatus{ Active = false, Value = 20} }
                 };
 
 

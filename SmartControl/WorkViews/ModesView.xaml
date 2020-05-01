@@ -33,24 +33,27 @@
             </Grid.ColumnDefinitions>
 
             <mini:ModeSlider Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" 
-                             Description="Tryb Boost" Suffix="m"/>
+                             Description="Tryb Boost" Suffix="m" Value="{Binding Boost, Mode=TwoWay}"/>
             <mini:ModeSlider Grid.Row="1" Grid.Column="0" Margin="0,0,5,0" 
-                             Description="Wietrzenie" Suffix="h"/>
+                             Description="Wietrzenie" Suffix="h" Value="{Binding Airing, Mode=TwoWay}"/>
             <mini:ModeSlider Grid.Row="2" Grid.Column="0" Margin="0,0,5,0" 
-                             Description="Sen" Suffix="h"/>
+                             Description="Sen" Suffix="h" Value="{Binding Sleep, Mode=TwoWay}"/>
             <mini:ModeSlider Grid.Row="3" Grid.Column="0" Margin="0,0,5,0" 
-                             Description="Kominek" Suffix="m"/>
+                             Description="Kominek" Suffix="m" Value="{Binding Holiday, Mode=TwoWay}"/>
 
             <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" BorderThickness="0 0 1 0" Margin="0,0,0,0" BorderBrush="DarkGray"/>
-            
+
             <mini:ModeSlider Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" 
-                             Description="Ograniczenie wydajności centrali" Suffix="%"/>
+                             Description="Ograniczenie wydajności centrali" Suffix="%"
+                             Value="{Binding MaxVent, Mode=TwoWay}"/>
             <mini:ModeSlider Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" 
                              Description="Ograniczenie wentylatora nawiewnego" Suffix="%"
-                             CheckBoxVisible="False"/>
+                             CheckBoxVisible="False"
+                             Value="{Binding AirflowLimitation, Mode=TwoWay}"/>
             <mini:ModeSlider Grid.Row="2" Grid.Column="1" Margin="5,0,0,0" 
                              Description="Ograniczenie wentylatora wywiewnego" Suffix="%"
-                             CheckBoxVisible="False"/>
+                             CheckBoxVisible="False"
+                             Value="{Binding ExhaustLimitation, Mode=TwoWay}"/>
         </Grid>
 
         <!-- Software -->

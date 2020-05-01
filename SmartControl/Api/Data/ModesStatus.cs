@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SmartControl.Api.Data
 {
-    public class ModesStatus
+    public struct ModesStatus
     {
         /// <summary>
         /// Is active

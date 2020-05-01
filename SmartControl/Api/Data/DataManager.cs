@@ -89,6 +89,15 @@ namespace SmartControl.Api.Data
 
         #region Modes
         private readonly Dictionary<int, ModesStatus> _Modes = new Dictionary<int, ModesStatus>();
+
+        /// <summary>
+        /// Modes of work
+        /// 1. Boost
+        /// 2. Airing
+        /// 3. Sleep
+        /// 4. Holiday
+        /// 5. Max Vent
+        /// </summary>
         public ReadOnlyDictionary<int, ModesStatus> Modes
         {
             get => new ReadOnlyDictionary<int, ModesStatus>(_Modes);
@@ -119,7 +128,7 @@ namespace SmartControl.Api.Data
         ModStatus _Work;
         public ModStatus Work
         {
-            get => Work;
+            get => _Work;
             set
             {
                 _Work = value;

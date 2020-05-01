@@ -32,7 +32,10 @@ namespace SmartControl.WorkViews.Mini
 
         public static readonly DependencyProperty ValueProperty =
                     DependencyProperty.Register("Value", typeof(ModesStatus), typeof(ModeSlider),
-                        new FrameworkPropertyMetadata(new ModesStatus()));
+                        new FrameworkPropertyMetadata(new ModesStatus(),
+                            new PropertyChangedCallback(
+                                (d, e) => (d as ModeSlider)?.NotifyPropertyChanged("")
+                                )));
 
         public static readonly DependencyProperty MaximumProperty =
                     DependencyProperty.Register("Maximum", typeof(int), typeof(ModeSlider),
@@ -116,7 +119,7 @@ namespace SmartControl.WorkViews.Mini
         {
             get
             {
-                return GetValue(ValueProperty) as ModesStatus;
+                return (ModesStatus)GetValue(ValueProperty);
             }
             set
             {
@@ -139,7 +142,9 @@ namespace SmartControl.WorkViews.Mini
             get => Value.Value;
             set
             {
-                Value.Value = value;
+                var v = Value;
+                v.Value = value;
+                Value = v;
                 NotifyPropertyChanged();
             }
         }
@@ -149,7 +154,9 @@ namespace SmartControl.WorkViews.Mini
             get => Value.Active;
             set
             {
-                Value.Active = value;
+                var v = Value;
+                v.Active = value;
+                Value = v;
                 NotifyPropertyChanged();
             }
         }
