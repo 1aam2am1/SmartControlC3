@@ -46,6 +46,10 @@ namespace SmartControl.Api
                 StopDataSynchronization();
                 var task = await server.Value.Auth(s, i);
                 //wait for it to end without blocking the main thread
+                if (task)
+                {
+                    await GetVersion();
+                }
 
                 onConnection?.Invoke(task);
             }
@@ -256,6 +260,18 @@ namespace SmartControl.Api
         #endregion
 
         #region Internal
+
+        private async Task GetVersion()
+        {
+            var response = await server.Value.Version();
+
+            lock (locker)
+            {
+                data.ApiVersion = response.ApiVersion;
+                data.DeviceVersion = response.DeviceVersion;
+                data.ServerVersion = response.ServerVersion;
+            }
+        }
 
         private async Task PingAction(int action)
         {

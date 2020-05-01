@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Collections.ObjectModel;
-
+//TODO: Remove many unnecessary new and dispose when releasing and knowing as disposable
 namespace SmartControl.Api.Data
 {
     public class DataManager : INotifyPropertyChanged
@@ -179,6 +179,43 @@ namespace SmartControl.Api.Data
             set
             {
                 _BateryLow = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Version
+
+        MyVersion _ApiVersion;
+        public MyVersion ApiVersion
+        {
+            get => _ApiVersion;
+            set
+            {
+                _ApiVersion = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        MyVersion _ServerVersion;
+        public MyVersion ServerVersion
+        {
+            get => _ServerVersion;
+            set
+            {
+                _ServerVersion = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        MyVersion _DeviceVersion;
+        public MyVersion DeviceVersion
+        {
+            get => _DeviceVersion;
+            set
+            {
+                _DeviceVersion = value;
                 NotifyPropertyChanged();
             }
         }
