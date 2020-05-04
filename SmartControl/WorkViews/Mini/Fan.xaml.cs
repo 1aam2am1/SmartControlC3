@@ -27,11 +27,9 @@ namespace SmartControl.WorkViews.Mini
                     DependencyProperty.Register("Description", typeof(string), typeof(Fan));
 
         public static readonly DependencyProperty ParametersProperty =
-                    DependencyProperty.Register("Parameters", typeof(ReadOnlyDictionary<int, int>), typeof(Fan),
+                    DependencyProperty.Register("Parameters", typeof(ObservableCollection<int>), typeof(Fan),
                         new FrameworkPropertyMetadata(null,
-                            new PropertyChangedCallback(
-                                (d, e) => (d as Fan)?.NotifyPropertyChanged("")
-                                )));
+                            new PropertyChangedCallback(OnParametersSourceChanged)));
 
         public static readonly DependencyProperty TempIdProperty =
                     DependencyProperty.Register("TempId", typeof(int), typeof(Fan),
@@ -66,11 +64,11 @@ namespace SmartControl.WorkViews.Mini
             }
         }
 
-        public ReadOnlyDictionary<int, int> Parameters
+        public ObservableCollection<int> Parameters
         {
             get
             {
-                return GetValue(ParametersProperty) as ReadOnlyDictionary<int, int>;
+                return GetValue(ParametersProperty) as ObservableCollection<int>;
             }
             set
             {
@@ -116,9 +114,16 @@ namespace SmartControl.WorkViews.Mini
         {
             get
             {
-                int value = 0;
-                Parameters?.TryGetValue(TempId, out value);
-                return value;
+                if (Parameters != null)
+                {
+                    int value = 0;
+                    BindingOperations.AccessCollection(Parameters, () =>
+                    {
+                        value = Parameters[TempId];
+                    }, false);
+                    return value;
+                }
+                return 0;
             }
         }
 
@@ -126,9 +131,16 @@ namespace SmartControl.WorkViews.Mini
         {
             get
             {
-                int value = 0;
-                Parameters?.TryGetValue(WaterId, out value);
-                return value;
+                if (Parameters != null)
+                {
+                    int value = 0;
+                    BindingOperations.AccessCollection(Parameters, () =>
+                    {
+                        value = Parameters[WaterId];
+                    }, false);
+                    return value;
+                }
+                return 0;
             }
         }
 
@@ -136,9 +148,16 @@ namespace SmartControl.WorkViews.Mini
         {
             get
             {
-                int value = 0;
-                Parameters?.TryGetValue(PMId, out value);
-                return value;
+                if (Parameters != null && PMId != -1)
+                {
+                    int value = 0;
+                    BindingOperations.AccessCollection(Parameters, () =>
+                    {
+                        value = Parameters[PMId];
+                    }, false);
+                    return value;
+                }
+                return 0;
             }
         }
 
@@ -161,7 +180,7 @@ namespace SmartControl.WorkViews.Mini
         {
             get
             {
-                if(PMId != -1)
+                if (PMId != -1)
                 {
                     return new SolidColorBrush(Colors.White);
                 }
@@ -176,6 +195,25 @@ namespace SmartControl.WorkViews.Mini
         {
             InitializeComponent();
         }
+
+        private static void OnParametersSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is Fan attachedObject)) return;
+
+            if (e.OldValue is ObservableCollection<int> oldItems)
+            {
+                oldItems.CollectionChanged -= (s, e) => attachedObject.NotifyPropertyChanged("");
+            }
+
+            if (e.NewValue is ObservableCollection<int> sourceItems)
+            {
+                sourceItems.CollectionChanged += (s, e) => attachedObject.NotifyPropertyChanged("");
+            }
+
+            attachedObject.NotifyPropertyChanged("");
+        }
+
+
 
         void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {

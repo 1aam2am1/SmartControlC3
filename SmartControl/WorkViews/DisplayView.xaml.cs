@@ -26,16 +26,9 @@ namespace SmartControl.WorkViews
         public event PropertyChangedEventHandler PropertyChanged;
         private IClient client;
 
-        public ReadOnlyDictionary<int, int> Parameters
+        public ObservableCollection<int> Parameters
         {
             get => client?.GetDataManager().Parameters;
-            set
-            {
-                foreach (var v in value)
-                {
-                    client?.SaveParametersQueue(v.Key, v.Value);
-                }
-            }
         }
 
 
@@ -46,16 +39,17 @@ namespace SmartControl.WorkViews
                 int[] heater = { 42, 43 };
                 int[] fan = { 27, 29 };
                 int result = 0;
-                foreach (var i in heater)
+                BindingOperations.AccessCollection(Parameters, () =>
                 {
-                    Parameters.TryGetValue(i, out int value);
-                    result += value * 10;
-                }
-                foreach (var i in fan)
-                {
-                    Parameters.TryGetValue(i, out int value);
-                    result += (int)PowerFromFan(value);
-                }
+                    foreach (var i in heater)
+                    {
+                        result += Parameters[i] * 10;
+                    }
+                    foreach (var i in fan)
+                    {
+                        result += (int)PowerFromFan(Parameters[i]);
+                    }
+                }, false);
 
 
                 return result + 5;
@@ -64,39 +58,91 @@ namespace SmartControl.WorkViews
 
         public int Recovered
         {
-            get { Parameters.TryGetValue(37, out int value); return value; }
+            get
+            {
+                int value = 0;
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    value = Parameters[37];
+                }, false);
+                return value;
+            }
         }
 
         public int Humidity1
         {
-            get { Parameters.TryGetValue(26, out int value); return value; }
+            get
+            {
+                int value = 0;
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    value = Parameters[26];
+                }, false);
+                return value;
+            }
             set
             {
-                client?.SaveParametersQueue(26, value);
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    Parameters[26] = value;
+                }, true);
             }
         }
         public int Rpm1
         {
-            get { Parameters.TryGetValue(27, out int value); return value; }
+            get
+            {
+                int value = 0;
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    value = Parameters[27];
+                }, false);
+                return value;
+            }
             set
             {
-                client?.SaveParametersQueue(27, value);
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    Parameters[27] = value;
+                }, true);
             }
         }
         public int Humidity2
         {
-            get { Parameters.TryGetValue(28, out int value); return value; }
+            get
+            {
+                int value = 0;
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    value = Parameters[28];
+                }, false);
+                return value;
+            }
             set
             {
-                client?.SaveParametersQueue(28, value);
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    Parameters[28] = value;
+                }, true);
             }
         }
         public int Rpm2
         {
-            get { Parameters.TryGetValue(29, out int value); return value; }
+            get
+            {
+                int value = 0;
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    value = Parameters[29];
+                }, false);
+                return value;
+            }
             set
             {
-                client?.SaveParametersQueue(29, value);
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    Parameters[29] = value;
+                }, true);
             }
         }
 
@@ -114,7 +160,7 @@ namespace SmartControl.WorkViews
         {
             InitializeComponent();
         }
-
+        //TODO: Remove setclient move to constructor
         public void SetClient(IClient c)
         {
             if (client != null)

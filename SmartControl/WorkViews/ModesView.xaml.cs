@@ -26,16 +26,9 @@ namespace SmartControl.WorkViews
         public event PropertyChangedEventHandler PropertyChanged;
         private IClient client;
 
-        private ReadOnlyDictionary<int, int> Parameters
+        public ObservableCollection<int> Parameters
         {
             get => client?.GetDataManager().Parameters;
-            set
-            {
-                foreach (var v in value)
-                {
-                    client?.SaveParametersQueue(v.Key, v.Value);
-                }
-            }
         }
 
         public ModesStatus Boost
@@ -44,14 +37,21 @@ namespace SmartControl.WorkViews
             {
                 if (client != null)
                 {
-                    client.GetDataManager().Modes.TryGetValue(0, out ModesStatus value);
+                    ModesStatus value = new ModesStatus();
+                    BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                    {
+                        value = client.GetDataManager().Modes[0];
+                    }, false);
                     return value;
                 }
                 return new ModesStatus();
             }
             set
             {
-                client?.SaveModesQueue(0, value);
+                BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                {
+                    client.GetDataManager().Modes[0] = value;
+                }, true);
             }
         }
 
@@ -61,14 +61,21 @@ namespace SmartControl.WorkViews
             {
                 if (client != null)
                 {
-                    client.GetDataManager().Modes.TryGetValue(1, out ModesStatus value);
+                    ModesStatus value = new ModesStatus();
+                    BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                    {
+                        value = client.GetDataManager().Modes[1];
+                    }, false);
                     return value;
                 }
                 return new ModesStatus();
             }
             set
             {
-                client?.SaveModesQueue(1, value);
+                BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                {
+                    client.GetDataManager().Modes[1] = value;
+                }, true);
             }
         }
 
@@ -78,14 +85,21 @@ namespace SmartControl.WorkViews
             {
                 if (client != null)
                 {
-                    client.GetDataManager().Modes.TryGetValue(2, out ModesStatus value);
+                    ModesStatus value = new ModesStatus();
+                    BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                    {
+                        value = client.GetDataManager().Modes[2];
+                    }, false);
                     return value;
                 }
                 return new ModesStatus();
             }
             set
             {
-                client?.SaveModesQueue(2, value);
+                BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                {
+                    client.GetDataManager().Modes[2] = value;
+                }, true);
             }
         }
 
@@ -95,14 +109,21 @@ namespace SmartControl.WorkViews
             {
                 if (client != null)
                 {
-                    client.GetDataManager().Modes.TryGetValue(3, out ModesStatus value);
+                    ModesStatus value = new ModesStatus();
+                    BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                    {
+                        value = client.GetDataManager().Modes[3];
+                    }, false);
                     return value;
                 }
                 return new ModesStatus();
             }
             set
             {
-                client?.SaveModesQueue(3, value);
+                BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                {
+                    client.GetDataManager().Modes[3] = value;
+                }, true);
             }
         }
 
@@ -112,14 +133,21 @@ namespace SmartControl.WorkViews
             {
                 if (client != null)
                 {
-                    client.GetDataManager().Modes.TryGetValue(4, out ModesStatus value);
+                    ModesStatus value = new ModesStatus();
+                    BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                    {
+                        value = client.GetDataManager().Modes[4];
+                    }, false);
                     return value;
                 }
                 return new ModesStatus();
             }
             set
             {
-                client?.SaveModesQueue(4, value);
+                BindingOperations.AccessCollection(client.GetDataManager().Modes, () =>
+                {
+                    client.GetDataManager().Modes[4] = value;
+                }, true);
             }
         }
 
@@ -127,12 +155,20 @@ namespace SmartControl.WorkViews
         {
             get
             {
-                Parameters.TryGetValue(59, out int value);
+                int value = 0;
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    value = Parameters[59];
+                }, false);
+
                 return new ModesStatus { Value = value };
             }
             set
             {
-                client?.SaveParametersQueue(59, value.Value);
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    Parameters[59] = value.Value;
+                }, true);
             }
         }
 
@@ -140,12 +176,20 @@ namespace SmartControl.WorkViews
         {
             get
             {
-                Parameters.TryGetValue(60, out int value);
+                int value = 0;
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    value = Parameters[60];
+                }, false);
+
                 return new ModesStatus { Value = value };
             }
             set
             {
-                client?.SaveParametersQueue(59, value.Value);
+                BindingOperations.AccessCollection(Parameters, () =>
+                {
+                    Parameters[60] = value.Value;
+                }, true);
             }
         }
 

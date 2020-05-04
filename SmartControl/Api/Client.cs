@@ -23,15 +23,11 @@ namespace SmartControl.Api
         //public Lazy<IServer> server = new Lazy<IServer>(new HttpServer());
         public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
         readonly Lazy<HistoryContext> history = new Lazy<HistoryContext>(new HistoryContext());
-
         private readonly object locker = new object();
 
-        #region ToSendData
-        private readonly Dictionary<int, int> _Parameters = new Dictionary<int, int>();
-        private readonly Dictionary<DayOfWeek, List<CalendarTask>> _Task = new Dictionary<DayOfWeek, List<CalendarTask>>();
-        private CalendarSave _calendar;
-        private readonly Dictionary<int, ModesStatus> _Modes = new Dictionary<int, ModesStatus>();
-        #endregion
+        //TODO: Loaded data also update server_data and data
+        //TODO: Integration to saving Property lock data
+        private readonly DataManager server_data = new DataManager();
 
         /// <summary>
         /// Connect to server with given settings
@@ -138,7 +134,7 @@ namespace SmartControl.Api
 
                 lock (locker)
                 {
-                    loaded.UpdateTarameters(key, saved);
+                    loaded.UpdateParameters(key, saved);
                 }
             }
 
@@ -217,47 +213,6 @@ namespace SmartControl.Api
         {
             server.Value.ClosePingClient();
         }
-
-        #region Save
-        //TODO: Set parameters to display them
-        public void SaveParametersQueue(int p, int v)
-        {
-            lock (locker)
-            {
-                _Parameters[p] = v;
-            }
-        }
-
-        public void SaveCalendarQueue(bool Enabled, int ActiveDays, DateTime Date = new DateTime())
-        {
-            lock (locker)
-            {
-                _calendar = new CalendarSave
-                {
-                    Enabled = Enabled,
-                    ActiveDays = ActiveDays,
-                    Date = Date
-                };
-            }
-        }
-
-        public void SaveCalendarTaskQueue(DayOfWeek day, List<CalendarTask> tasks)
-        {
-            lock (locker)
-            {
-                _Task[day] = tasks;
-            }
-        }
-
-        public void SaveModesQueue(int i, ModesStatus status)
-        {
-            lock (locker)
-            {
-                _Modes[i] = status;
-            }
-        }
-
-        #endregion
 
         #region Internal
 
@@ -417,21 +372,34 @@ namespace SmartControl.Api
         {
             Dictionary<int, int> P;
             Dictionary<DayOfWeek, List<CalendarTask>> T;
-            CalendarSave C;
+            CalendarSave C = null;
             Dictionary<int, ModesStatus> M;
             List<Task> waitfor = new List<Task>();
 
             await _semaphoreSlim.WaitAsync();
             lock (locker)
             {
-                P = _Parameters;
-                _Parameters.Clear();
-                T = _Task;
-                _Task.Clear();
-                C = _calendar;
-                _calendar = null;
-                M = _Modes;
-                _Modes.Clear();
+                P = data.DiffParameters(server_data);
+                T = data.DiffTask(server_data);
+                if (data.ActiveDays != server_data.ActiveDays ||
+                    data.CalEnabled != server_data.CalEnabled ||
+                    data.CalDate != server_data.CalDate)
+                {
+                    C = new CalendarSave
+                    {
+                        ActiveDays = data.ActiveDays,
+                        Enabled = data.CalEnabled
+                    };
+                    if (data.CalDate != server_data.CalDate)
+                    {
+                        C.Date = data.CalDate;
+                    }
+                    else
+                    {
+                        C.Date = new DateTime();
+                    }
+                }
+                M = data.DiffModes(server_data);
             }
             try
             {

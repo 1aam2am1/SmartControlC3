@@ -30,7 +30,7 @@ namespace SmartControl.Api.Data
             NotifyPropertyChanged("Data");
         }
 
-        public void UpdateTarameters(int key, List<ValueInTime> value)
+        public void UpdateParameters(int key, List<ValueInTime> value)
         {
             foreach (var k in value)
             {

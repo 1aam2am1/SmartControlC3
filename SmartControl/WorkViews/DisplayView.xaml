@@ -85,11 +85,11 @@
 
                 <!-- CZERPNIA -->
                 <Border Grid.Row="0" Grid.Column="0" BorderThickness="0 0 0 1" Margin="0,0,10,0" BorderBrush="DarkGray"/>
-                <mini:Fan Grid.Row="0" Grid.Column="0" Description="Czerpnia" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                <mini:Fan Grid.Row="0" Grid.Column="0" Description="Czerpnia" Parameters="{Binding Parameters, Mode=OneWay}" 
                           TempId="20" WaterId="35" PMId="42"/>
 
                 <!-- Wyrzutnia -->
-                <mini:Fan Grid.Row="1" Grid.Column="0"  Description="Wyrzutnia" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                <mini:Fan Grid.Row="1" Grid.Column="0"  Description="Wyrzutnia" Parameters="{Binding Parameters, Mode=OneWay}" 
                           TempId="22" WaterId="36"/>
 
                 <!-- Big -->
@@ -166,11 +166,11 @@
 
                 <!-- Wywiew -->
                 <Border Grid.Row="0" Grid.Column="3" BorderThickness="0 0 0 1" Margin="10,0,0,0" BorderBrush="DarkGray"/>
-                <mini:Fan Grid.Row="0" Grid.Column="3" Description="Wywiew" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                <mini:Fan Grid.Row="0" Grid.Column="3" Description="Wywiew" Parameters="{Binding Parameters, Mode=OneWay}" 
                           TempId="21" WaterId="34" PMId="43"/>
 
                 <!-- Nawiew -->
-                <mini:Fan Grid.Row="1" Grid.Column="3"  Description="Nawiew" Parameters="{Binding Parameters, Mode=TwoWay}" 
+                <mini:Fan Grid.Row="1" Grid.Column="3"  Description="Nawiew" Parameters="{Binding Parameters, Mode=OneWay}" 
                           TempId="23" WaterId="33"/>
             </Grid>
         </Grid>
