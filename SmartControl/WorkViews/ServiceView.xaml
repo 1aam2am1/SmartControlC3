@@ -54,8 +54,13 @@
                            FontSize="16" Margin="10,10,10,10" HorizontalAlignment="Left"/>
 
 
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Version, Mode=OneTime}" Foreground="WhiteSmoke" VerticalAlignment="Center" 
+                <DockPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right">
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Version, Mode=OneTime}" Foreground="WhiteSmoke" VerticalAlignment="Center" 
                            FontSize="16" Margin="10,10,10,10" HorizontalAlignment="Right"/>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding BuildTime, Mode=OneTime}" Foreground="WhiteSmoke" VerticalAlignment="Center" 
+                           FontSize="16" Margin="10,10,10,10" HorizontalAlignment="Right"/>
+                </DockPanel>
+
 
                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ServerVersion, Mode=OneTime}" Foreground="WhiteSmoke" VerticalAlignment="Center" 
                            FontSize="16" Margin="10,10,10,10" HorizontalAlignment="Right"/>

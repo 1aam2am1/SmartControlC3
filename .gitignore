@@ -341,3 +341,4 @@ healthchecksdb
 
 #Database
 *.db
+/SmartControl/Settings/BuildTime.cs

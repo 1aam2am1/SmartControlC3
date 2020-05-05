@@ -46,4 +46,32 @@
     <Resource Include="Assets\thermometer@2x.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Settings\BuildTime.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BuildTime.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <DotNetCliToolReference Include="dotnet-t4-project-tool" Version="2.0.5" />
+    <TextTemplate Include="**\*.tt" />
+  </ItemGroup>
+
+  <Target Name="TextTemplateTransform" BeforeTargets="BeforeBuild">
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet t4 %(TextTemplate.Identity)" />
+  </Target>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Settings\BuildTime.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BuildTime.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SmartControl.Settings;
 
 namespace SmartControl.WorkViews
 {
@@ -32,6 +33,14 @@ namespace SmartControl.WorkViews
             {
                 var v = Assembly.GetExecutingAssembly().GetName().Version;
                 return string.Format("{0}.{1}.{2}.{3}", v.Major, v.Minor, v.Build, v.Revision);
+            }
+        }
+
+        static public string BuildTime
+        {
+            get
+            {
+                return Settings.BuildTime.CompilationTimestampUtc.ToString();
             }
         }
 
