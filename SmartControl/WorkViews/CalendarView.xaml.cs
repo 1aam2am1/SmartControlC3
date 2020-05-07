@@ -1,5 +1,6 @@
 ﻿using SmartControl.Api;
 using SmartControl.Api.Data;
+using SmartControl.Api.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,7 +24,7 @@ namespace SmartControl.WorkViews
     /// </summary>
     public partial class CalendarView : UserControl
     {
-        private IClient client;
+        private readonly IClient client;
 
         public ObservableCollection<CalendarTask> Monday
         {
@@ -39,16 +40,40 @@ namespace SmartControl.WorkViews
 
                 D = (o) =>
                 {
-                    Debug.WriteLine("Delete: {0}", object.ReferenceEquals(o, Tasks[1]));
+                    BindingOperations.AccessCollection(Tasks, () =>
+                    {
+                        Tasks.Remove(o);
+                    }, true);
                 };
             }
             public string Name { get; private set; }
             public ObservableCollection<CalendarTask> Tasks { get; private set; }
 
-            public Action<object> D { get; }
+            public Action<CalendarTask> D { get; }
+
+            private ICommand _A;
+            public ICommand A
+            {
+                get
+                {
+                    if (_A == null)
+                    {
+                        _A = new RelayCommand((_) =>
+                        {
+                            BindingOperations.AccessCollection(Tasks, () =>
+                            {
+                                if (Tasks.Count < 5)
+                                    Tasks.Add(new CalendarTask());
+                            }, true);
+                        }
+                        );
+                    }
+                    return _A;
+                }
+            }
         }
 
-        public IEnumerable<DayCollection> _Tasks
+        private IEnumerable<DayCollection> _Tasks
         {
             get
             {

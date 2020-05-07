@@ -34,7 +34,7 @@ namespace SmartControl.WorkViews.Mini
                                 )));
 
         public static readonly DependencyProperty DeleteProperty =
-                    DependencyProperty.Register("Delete", typeof(Action<object>), typeof(Task));
+                    DependencyProperty.Register("Delete", typeof(Action<CalendarTask>), typeof(Task));
 
         public CalendarTask Value
         {
@@ -49,11 +49,11 @@ namespace SmartControl.WorkViews.Mini
             }
         }
 
-        public Action<object> Delete
+        public Action<CalendarTask> Delete
         {
             get
             {
-                return (Action<object>)GetValue(DeleteProperty);
+                return (Action<CalendarTask>)GetValue(DeleteProperty);
             }
             set
             {
@@ -210,7 +210,7 @@ namespace SmartControl.WorkViews.Mini
 
         private void Button_Minus_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(GetValue(ValueProperty));
+            Delete?.Invoke(Value);
         }
 
         public Task()

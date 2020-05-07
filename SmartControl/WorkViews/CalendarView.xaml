@@ -21,8 +21,16 @@
                             <RowDefinition Height="Auto" MinHeight="32"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="{Binding Name, Mode=OneWay}" Foreground="Black" VerticalAlignment="Top"/>
-                        <ListView Grid.Row="1" ItemsSource="{Binding Tasks, Mode=OneWay}" 
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name, Mode=OneWay}" Foreground="Black" VerticalAlignment="Top"/>
+                        <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource ImageButtonStyle}" Command="{Binding A}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Image Source="/Assets/plus@2x.png" Height="15"/>
+                        </Button>
+                        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Tasks, Mode=OneWay}" 
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False" VerticalAlignment="Stretch"
                                   Height="{Binding ActualHeight, ElementName=Main, Converter={StaticResource MathConverter}, ConverterParameter=x-60}">
                             <ListView.ItemTemplate>
