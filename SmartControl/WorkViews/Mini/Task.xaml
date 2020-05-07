@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SmartControl.WorkViews.Mini"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="130">
+             d:DesignHeight="200" d:DesignWidth="125">
     <Grid DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-          Background="LightGray">
+          Background="LightGray" Width="125" Height="220">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -25,37 +25,36 @@
         <!-- Buttons -->
         <DockPanel Grid.Row="0" HorizontalAlignment="Stretch">
             <Button DockPanel.Dock="Left" x:Name="A" Click="ActiveChange" Content="Active" Foreground="{Binding Active, Converter={StaticResource BooleanToColorConverter}}"/>
-            <Button Style="{StaticResource ImageButtonStyle}" Click="Button_Minus_Click" HorizontalAlignment="Right" VerticalAlignment="Center"
-                Height="{Binding ActualHeight, ElementName=A, Converter={StaticResource MathConverter}, ConverterParameter=x-4}">
-                <Image Source="/Assets/minus@2x.png" />
+            <Button Style="{StaticResource ImageButtonStyle}" Click="Button_Minus_Click" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Image Source="/Assets/minus@2x.png" Height="15"/>
             </Button>
         </DockPanel>
         <!-- Start -->
         <TextBlock Grid.Row="1" Text="Start"/>
         <DockPanel Grid.Row="2">
-            <local:NumericText ButtonsVisible="False" Text="{Binding StartHour, Mode=TwoWay}"/>
+            <local:TextSuffix IsReadOnly="False" Width="60" Text="{Binding StartHour, Mode=TwoWay}"/>
             <TextBlock Text=":"/>
-            <local:NumericText ButtonsVisible="False" Text="{Binding StartMinute, Mode=TwoWay}" HorizontalAlignment="Left"/>
+            <local:TextSuffix IsReadOnly="False" Width="60" Text="{Binding StartMinute, Mode=TwoWay}" HorizontalAlignment="Left"/>
         </DockPanel>
         <!-- Koniec -->
         <TextBlock Grid.Row="3" Text="Koniec"/>
         <DockPanel Grid.Row="4">
-            <local:NumericText ButtonsVisible="False" Text="{Binding EndingHour, Mode=TwoWay}"/>
+            <local:TextSuffix IsReadOnly="False" Width="60"  Text="{Binding EndingHour, Mode=TwoWay}"/>
             <TextBlock Text=":"/>
-            <local:NumericText ButtonsVisible="False"  Text="{Binding EndingMinute, Mode=TwoWay}" HorizontalAlignment="Left"/>
+            <local:TextSuffix IsReadOnly="False" Width="60"  Text="{Binding EndingMinute, Mode=TwoWay}" HorizontalAlignment="Left"/>
         </DockPanel>
 
         <!-- Moc -->
         <TextBlock Grid.Row="5" Text="Moc wywiew"/>
-        <local:NumericText Grid.Row="6" ButtonsVisible="False" Text="{Binding ExhaustPower, Mode=TwoWay}" HorizontalAlignment="Left"/>
+        <local:TextSuffix IsReadOnly="False" Width="60"  Grid.Row="6" Text="{Binding ExhaustPower, Mode=TwoWay}" HorizontalAlignment="Left"/>
 
         <TextBlock Grid.Row="7" Text="Moc nawiew"/>
-        <local:NumericText Grid.Row="8" ButtonsVisible="False" Text="{Binding AirflowPower, Mode=TwoWay}" HorizontalAlignment="Left"/>
+        <local:TextSuffix IsReadOnly="False" Width="60"  Grid.Row="8" Text="{Binding AirflowPower, Mode=TwoWay}" HorizontalAlignment="Left"/>
 
         <TextBlock Grid.Row="9" Text="Temp powietrza"/>
         <DockPanel Grid.Row="10">
             <CheckBox Margin="5,0,5,0" IsChecked="{Binding Heater, Mode=TwoWay}"/>
-            <local:NumericText Grid.Row="10" ButtonsVisible="False" Text="{Binding AirTemperature, Mode=TwoWay}" HorizontalAlignment="Left"/>
+            <local:TextSuffix IsReadOnly="False" Width="60"  Grid.Row="10" Text="{Binding AirTemperature, Mode=TwoWay}" HorizontalAlignment="Left"/>
         </DockPanel>
 
         <DockPanel Grid.Row="11">
