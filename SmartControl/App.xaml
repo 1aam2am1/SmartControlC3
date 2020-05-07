@@ -17,16 +17,17 @@
             </Setter>
         </Style>
 
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:ValueIfToVisibilityConverter x:Key="ValueIfToVisibilityConverter" />
-        <ikriv:MathConverter x:Key="MathConverter"/>
+        <converters:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        <ikriv:MathConverter x:Key="MathConverter" />
 
         <Style TargetType="{x:Type TextBox}" x:Key="TextBoxNoBorder">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBoxBase}">
                         <Border Name="Border"
-                CornerRadius="{Binding ActualHeight, ElementName=Border, Converter={StaticResource MathConverter}, ConverterParameter=x/2}"
+                CornerRadius="{Binding ActualHeight, ElementName=Border, Converter={ikriv:MathConverter}, ConverterParameter=x/2}"
                 BorderThickness="0" Padding="5,0,5,0">
                             <Border.Background>
                                 <SolidColorBrush Color="White" />

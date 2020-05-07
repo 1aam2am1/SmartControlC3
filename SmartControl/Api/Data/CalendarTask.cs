@@ -13,6 +13,10 @@ namespace SmartControl.Api.Data
         public bool Enabled { set; get; }
         public int Hour { set; get; }
         public int Minute { set; get; }
+
+        /// <summary>
+        /// Number of minutes
+        /// </summary>
         public int Duration { set; get; }
 
 
