@@ -8,8 +8,5 @@
         Title="MainWindow" Height="450" Width="800"
         Closing="Window_Closing"
         Closed="Window_Closed">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                  VerticalScrollBarVisibility="Auto">
-        <ContentControl Name="c" Content="{Binding}"/>
-    </ScrollViewer>
+    <ContentControl Name="c" Content="{Binding}"/>
 </Window>

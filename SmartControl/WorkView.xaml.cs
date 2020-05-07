@@ -34,7 +34,7 @@ namespace SmartControl
             DataContext = display.Value;
         }
 
-        public async void SetClient(IClient c)
+        public async Task SetClient(IClient c)
         {
             await Task.Run(() =>
             {

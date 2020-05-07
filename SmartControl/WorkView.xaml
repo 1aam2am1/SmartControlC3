@@ -47,7 +47,10 @@
             <Button Grid.Column="5" Content="Service" Click="Button_Click_5"/>
 
         </Grid>
-        <ContentControl Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Content="{Binding}"/>
+        <ScrollViewer Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+            <ContentControl Content="{Binding}"/>
+        </ScrollViewer>
 
     </Grid>
 </UserControl>

@@ -51,17 +51,16 @@ namespace SmartControl
 
             DataContext = loading;
 
-            client.Connect(settings, credentials, (n) =>
+            client.Connect(settings, credentials, async (n) =>
             {
                 if (n)
                 {
                     MyUserSettings.Instance.Save(credentials);
 
                     var work = new WorkView();
-                    work.SetClient(client);
+                    await work.SetClient(client);
 
-                    DataContext = work;
-
+                    Dispatcher.Invoke(() => { DataContext = work; });
 
                     client.StartDataSynchronization();
                 }
