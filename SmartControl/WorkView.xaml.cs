@@ -21,60 +21,54 @@ namespace SmartControl
     /// </summary>
     public partial class WorkView : UserControl
     {
-        readonly Lazy<DisplayView> display = new Lazy<DisplayView>(new DisplayView());
-        readonly Lazy<CalendarView> calendar = new Lazy<CalendarView>(new CalendarView());
-        readonly Lazy<ModesView> modes = new Lazy<ModesView>(new ModesView());
-        readonly Lazy<ChartsView> charts = new Lazy<ChartsView>(new ChartsView());
-        readonly Lazy<WorkViews.SettingsView> settings = new Lazy<WorkViews.SettingsView>(new WorkViews.SettingsView());
-        readonly Lazy<ServiceView> service = new Lazy<ServiceView>(new ServiceView());
-        public WorkView()
+        readonly DisplayView display;
+        readonly CalendarView calendar;
+        readonly ModesView modes;
+        readonly ChartsView charts;
+        readonly WorkViews.SettingsView settings;
+        readonly ServiceView service;
+        public WorkView(IClient c)
         {
             InitializeComponent();
 
-            DataContext = display.Value;
-        }
+            display = new DisplayView(c);
+            calendar = new CalendarView(c);
+            modes = new ModesView(c);
+            charts = new ChartsView(c);
+            settings = new WorkViews.SettingsView(c);
+            service = new ServiceView(c);
 
-        public async Task SetClient(IClient c)
-        {
-            await Task.Run(() =>
-            {
-                display.Value.SetClient(c);
-                calendar.Value.SetClient(c);
-                modes.Value.SetClient(c);
-                charts.Value.SetClient(c);
-                settings.Value.SetClient(c);
-                service.Value.SetClient(c);
-            });
+            DataContext = display;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DataContext = display.Value;
+            DataContext = display;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            DataContext = calendar.Value;
+            DataContext = calendar;
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            DataContext = modes.Value;
+            DataContext = modes;
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            DataContext = charts.Value;
+            DataContext = charts;
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            DataContext = settings.Value;
+            DataContext = settings;
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            DataContext = service.Value;
+            DataContext = service;
         }
     }
 }

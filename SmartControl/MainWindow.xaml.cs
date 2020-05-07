@@ -57,8 +57,7 @@ namespace SmartControl
                 {
                     MyUserSettings.Instance.Save(credentials);
 
-                    var work = new WorkView();
-                    await work.SetClient(client);
+                    var work = new WorkView(client);
 
                     Dispatcher.Invoke(() => { DataContext = work; });
 

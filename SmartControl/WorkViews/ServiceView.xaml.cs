@@ -25,7 +25,7 @@ namespace SmartControl.WorkViews
     public partial class ServiceView : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private IClient client;
+        private readonly IClient client;
 
         static public string Version
         {
@@ -48,7 +48,7 @@ namespace SmartControl.WorkViews
         {
             get
             {
-                var v = client?.GetDataManager().ApiVersion ?? new MyVersion();
+                var v = client.GetDataManager().ApiVersion;
                 return string.Format("{0}.{1}.{2}.{3}", v.Major, v.Minor, v.Build, v.Revision);
             }
         }
@@ -57,7 +57,7 @@ namespace SmartControl.WorkViews
         {
             get
             {
-                var v = client?.GetDataManager().ServerVersion ?? new MyVersion();
+                var v = client.GetDataManager().ServerVersion;
                 return string.Format("{0}.{1}.{2}.{3}", v.Major, v.Minor, v.Build, v.Revision);
             }
         }
@@ -66,29 +66,17 @@ namespace SmartControl.WorkViews
         {
             get
             {
-                var v = client?.GetDataManager().DeviceVersion ?? new MyVersion();
+                var v = client.GetDataManager().DeviceVersion;
                 return string.Format("{0}.{1}.{2}.{3}", v.Major, v.Minor, v.Build, v.Revision);
             }
         }
 
-        public ServiceView()
+        public ServiceView(IClient c)
         {
             InitializeComponent();
-        }
 
-        public void SetClient(IClient c)
-        {
-            if (client != null)
-            {
-                client.GetDataManager().PropertyChanged -= OnChange;
-            }
             client = c;
-            if (client != null)
-            {
-                client.GetDataManager().PropertyChanged += OnChange;
-            }
-
-            NotifyPropertyChanged();
+            client.GetDataManager().PropertyChanged += OnChange;
         }
 
         void OnChange(object sender, PropertyChangedEventArgs e)

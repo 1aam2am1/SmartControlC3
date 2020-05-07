@@ -19,14 +19,9 @@ namespace SmartControl.WorkViews
     /// </summary>
     public partial class ChartsView : UserControl
     {
-        public ChartsView()
+        public ChartsView(IClient c)
         {
             InitializeComponent();
-        }
-
-        public void SetClient(IClient c)
-        {
-
         }
     }
 }

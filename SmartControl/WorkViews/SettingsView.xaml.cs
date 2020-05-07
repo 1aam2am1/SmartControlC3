@@ -19,14 +19,9 @@ namespace SmartControl.WorkViews
     /// </summary>
     public partial class SettingsView : UserControl
     {
-        public SettingsView()
+        public SettingsView(IClient c)
         {
             InitializeComponent();
-        }
-
-        public void SetClient(IClient c)
-        {
-
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SmartControl.WorkViews
 
         public ObservableCollection<CalendarTask> Monday
         {
-            get => client?.GetDataManager().Task[(int)DayOfWeek.Monday];
+            get => client.GetDataManager().Task[(int)DayOfWeek.Monday];
         }
 
         public class DayCollection
@@ -48,34 +48,30 @@ namespace SmartControl.WorkViews
             public Action<object> D { get; }
         }
 
-        public IEnumerable<DayCollection> Tasks
+        public IEnumerable<DayCollection> _Tasks
         {
             get
             {
-                yield return new DayCollection("Poniedziałek", client?.GetDataManager().Task[(int)DayOfWeek.Monday]);
-                yield return new DayCollection("Wtorek", null);//client?.GetDataManager().Task[(int)DayOfWeek.Tuesday]
-                yield return new DayCollection("Środa", client?.GetDataManager().Task[(int)DayOfWeek.Wednesday]);
-                yield return new DayCollection("Czwartek", client?.GetDataManager().Task[(int)DayOfWeek.Thursday]);
-                yield return new DayCollection("Piątek", client?.GetDataManager().Task[(int)DayOfWeek.Friday]);
-                yield return new DayCollection("Sobota", client?.GetDataManager().Task[(int)DayOfWeek.Saturday]);
-                yield return new DayCollection("Niedziela", client?.GetDataManager().Task[(int)DayOfWeek.Sunday]);
+                yield return new DayCollection("Poniedziałek", client.GetDataManager().Task[(int)DayOfWeek.Monday]);
+                yield return new DayCollection("Wtorek", client.GetDataManager().Task[(int)DayOfWeek.Tuesday]);
+                yield return new DayCollection("Środa", client.GetDataManager().Task[(int)DayOfWeek.Wednesday]);
+                yield return new DayCollection("Czwartek", client.GetDataManager().Task[(int)DayOfWeek.Thursday]);
+                yield return new DayCollection("Piątek", client.GetDataManager().Task[(int)DayOfWeek.Friday]);
+                yield return new DayCollection("Sobota", client.GetDataManager().Task[(int)DayOfWeek.Saturday]);
+                yield return new DayCollection("Niedziela", client.GetDataManager().Task[(int)DayOfWeek.Sunday]);
             }
         }
 
-        public Action<object> Delete { get; }
+        private IEnumerable<DayCollection> T;
+        public IEnumerable<DayCollection> Tasks
+        {
+            get => T ?? (T = _Tasks);
+        }
 
-        public CalendarView()
+        public CalendarView(IClient c)
         {
             InitializeComponent();
 
-            Delete = (o) =>
-            {
-                Debug.WriteLine("Delete: {0}", object.ReferenceEquals(o, Monday[0]));
-            };
-        }
-
-        public void SetClient(IClient c)
-        {
             client = c;
         }
     }

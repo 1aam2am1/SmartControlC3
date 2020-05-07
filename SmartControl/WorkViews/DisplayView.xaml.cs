@@ -24,11 +24,11 @@ namespace SmartControl.WorkViews
     public partial class DisplayView : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private IClient client;
+        private readonly IClient client;
 
         public ObservableCollection<int> Parameters
         {
-            get => client?.GetDataManager().Parameters;
+            get => client.GetDataManager().Parameters;
         }
 
 
@@ -156,24 +156,12 @@ namespace SmartControl.WorkViews
             get => 40;
         }
 
-        public DisplayView()
+        public DisplayView(IClient c)
         {
             InitializeComponent();
-        }
-        //TODO: Remove setclient move to constructor
-        public void SetClient(IClient c)
-        {
-            if (client != null)
-            {
-                client.GetDataManager().PropertyChanged -= OnChange;
-            }
-            client = c;
-            if (client != null)
-            {
-                client.GetDataManager().PropertyChanged += OnChange;
-            }
 
-            NotifyPropertyChanged();
+            client = c;
+            client.GetDataManager().PropertyChanged += OnChange;
         }
 
         void OnChange(object sender, PropertyChangedEventArgs e)
