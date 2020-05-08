@@ -18,8 +18,8 @@ namespace SmartControl.Api.Server
 {
     public class HttpServer : IServer
     {
-        private readonly HttpClientHandler handler;
-        private readonly HttpClient http;
+        private HttpClientHandler handler;
+        private HttpClient http = null;
 
 
         private readonly static string authSite = "auth";
@@ -43,23 +43,23 @@ namespace SmartControl.Api.Server
 
         public HttpServer()
         {
-            handler = new HttpClientHandler
-            {
-                Credentials = new NetworkCredential(),
-                PreAuthenticate = true
-            };
 
-            http = new HttpClient(handler)
-            {
-                Timeout = Timeout.InfiniteTimeSpan
-            };
         }
 
         public async Task<bool> Auth(ConnectSettings s, Credentials i)
         {
-            //handler.Credentials = new NetworkCredential(i.Credentials.UserName, i.Credentials.Password);
-            (handler.Credentials as NetworkCredential).UserName = i.UserName;
-            (handler.Credentials as NetworkCredential).Password = i.Password;
+            handler = new HttpClientHandler
+            {
+                Credentials = new NetworkCredential(i.UserName, i.Password),
+                PreAuthenticate = true
+            };
+
+
+            http?.Dispose();
+            http = new HttpClient(handler, true)
+            {
+                Timeout = Timeout.InfiniteTimeSpan
+            };
 
             try
             {

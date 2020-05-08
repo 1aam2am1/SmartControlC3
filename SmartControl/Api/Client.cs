@@ -20,8 +20,8 @@ namespace SmartControl.Api
         /// <summary>
         /// What server to use to communicate with device
         /// </summary>
-        //public Lazy<IServer> server = new Lazy<IServer>(new HttpServer());
-        public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
+        public Lazy<IServer> server = new Lazy<IServer>(new HttpServer());
+        //public Lazy<IServer> server = new Lazy<IServer>(new FileServer());
         readonly Lazy<HistoryContext> history = new Lazy<HistoryContext>(new HistoryContext());
         private readonly object locker = new object();
 

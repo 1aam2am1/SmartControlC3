@@ -96,7 +96,7 @@ namespace SmartControl.Api.Server
             result.BateryLow = false;
             //result.ChangedParameters = new Random().NextDouble() > 0.5;
             result.ChangedParameters = true;
-            result.ChangedCalendar = new Random().NextDouble() > 0.5;
+            result.ChangedCalendar = true;//new Random().NextDouble() > 0.5;
             result.ChangedMod = new Random().NextDouble() > 0.5;
 
             file.WriteLine("Status Parameters: {0}, Calendar: {1}, Mod: {2}", result.ChangedParameters, result.ChangedCalendar, result.ChangedMod);
@@ -188,6 +188,18 @@ namespace SmartControl.Api.Server
                         Heater = false,
                         AirTemperature = 56,
                         Boost = false,
+                    },
+                    new CalendarTask
+                    {
+                        Enabled = false,
+                        Hour = 4,
+                        Minute = 00,
+                        Duration = new Random().Next(0, 600),
+                        ExhaustPower = 45,
+                        AirflowPower = 50,
+                        Heater = true,
+                        AirTemperature = 56,
+                        Boost = new Random().NextDouble() > 0.5,
                     }
                 };
 

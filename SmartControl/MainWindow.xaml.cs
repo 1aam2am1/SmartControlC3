@@ -51,7 +51,7 @@ namespace SmartControl
 
             DataContext = loading;
 
-            client.Connect(settings, credentials, async (n) =>
+            client.Connect(settings, credentials, (n) =>
             {
                 if (n)
                 {
