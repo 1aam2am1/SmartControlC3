@@ -6,13 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using SmartControl.Api.Server.Responses;
-using SmartControl.Api.Server.Queries;
-using SmartControl.Api.Server.SaveQueries;
-using SmartControl.Api.Data;
+using Api.Responses;
+using Api.Queries;
+using Api.SaveQueries;
+using Api.Data;
 using System.Threading;
 using System.Reflection;
 using System.IO;
+using System.Net.Http.Headers;
+
 
 namespace SmartControl.Api.Server
 {
@@ -60,6 +62,7 @@ namespace SmartControl.Api.Server
             {
                 Timeout = Timeout.InfiniteTimeSpan
             };
+            http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             try
             {

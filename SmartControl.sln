@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{0C27ADD0-BCC5-474D-AE45-0207B35D7C6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{F3A7C17B-676F-4DEE-A624-C6E3406A5CEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,14 @@ Global
 		{2C869732-7584-4150-BC38-D8D75FCB62B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C869732-7584-4150-BC38-D8D75FCB62B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C869732-7584-4150-BC38-D8D75FCB62B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C27ADD0-BCC5-474D-AE45-0207B35D7C6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C27ADD0-BCC5-474D-AE45-0207B35D7C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C27ADD0-BCC5-474D-AE45-0207B35D7C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C27ADD0-BCC5-474D-AE45-0207B35D7C6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3A7C17B-676F-4DEE-A624-C6E3406A5CEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3A7C17B-676F-4DEE-A624-C6E3406A5CEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3A7C17B-676F-4DEE-A624-C6E3406A5CEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A7C17B-676F-4DEE-A624-C6E3406A5CEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

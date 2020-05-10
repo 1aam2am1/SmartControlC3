@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Collections.ObjectModel;
-using SmartControl.Api.Extensions;
+using Api.Extensions;
 using System.Linq;
 using System.Windows.Data;
+using Api.Data;
 
 //TODO: Remove many unnecessary new and dispose when releasing and knowing as disposable
 namespace SmartControl.Api.Data

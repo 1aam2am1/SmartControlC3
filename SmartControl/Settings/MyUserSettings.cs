@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Security.Policy;
 using System.Text;
 using System.Drawing;
-using SmartControl.Api.Data;
+using Api.Data;
 
 namespace SmartControl.Settings
 {

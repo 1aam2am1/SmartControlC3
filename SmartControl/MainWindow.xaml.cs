@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
 using SmartControl.Settings;
-using SmartControl.Api.Data;
+using Api.Data;
 
 namespace SmartControl
 {

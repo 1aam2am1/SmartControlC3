@@ -1,7 +1,7 @@
-﻿using SmartControl.Api.Data;
-using SmartControl.Api.Server.Queries;
-using SmartControl.Api.Server.Responses;
-using SmartControl.Api.Server.SaveQueries;
+﻿using Api.Data;
+using Api.Queries;
+using Api.Responses;
+using Api.SaveQueries;
 using System;
 using System.Collections.Generic;
 using System.Text;

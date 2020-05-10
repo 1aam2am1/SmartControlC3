@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using SmartControl.Api.Server.Responses;
-using SmartControl.Api.Server.Queries;
-using SmartControl.Api.Server.SaveQueries;
+using Api.Responses;
+using Api.Queries;
+using Api.SaveQueries;
 using System.Threading;
 using System.Runtime.CompilerServices;
-using SmartControl.Api.Data;
+using Api.Data;
 
 namespace SmartControl.Api.Server
 {

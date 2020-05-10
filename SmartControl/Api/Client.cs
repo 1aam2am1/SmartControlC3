@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartControl.Api.Data;
 using SmartControl.Api.Server;
-using SmartControl.Api.Server.Queries;
-using SmartControl.Api.Server.Responses;
-using SmartControl.Api.Server.SaveQueries;
+using Api.Queries;
+using Api.SaveQueries;
 using SmartControl.Api.SQL;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Api.Data;
 
 namespace SmartControl.Api
 {

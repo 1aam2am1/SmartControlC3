@@ -1,4 +1,4 @@
-﻿using SmartControl.Api.Data;
+﻿using Api.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +18,17 @@ namespace SmartControl.Api.SQL
             return new SqlValueInTime
             {
                 SqlValueInTimeId = DateTimeOffset.FromUnixTimeSeconds(v.Time).UtcDateTime,
+                Value = v.Value
+            };
+        }
+
+        public static implicit operator ValueInTime(SqlValueInTime v)
+        {
+            DateTimeOffset localTime = DateTime.SpecifyKind(v.SqlValueInTimeId, DateTimeKind.Utc);
+
+            return new ValueInTime
+            {
+                Time = localTime.ToUnixTimeSeconds(),
                 Value = v.Value
             };
         }

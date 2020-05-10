@@ -1,5 +1,5 @@
-﻿using SmartControl.Api.Data;
-using SmartControl.Api.Extensions;
+﻿using Api.Data;
+using Api.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
