@@ -34,14 +34,16 @@ namespace Server
                     .RequireAuthenticatedUser()
                     .Build();
                 o.Filters.Add(new AuthorizeFilter(policy));
-            });
+            })
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/auth";
-                options.ExpireTimeSpan = new TimeSpan(0, 5, 0);
-            });
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/auth";
+                    options.ExpireTimeSpan = new TimeSpan(0, 5, 0);
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

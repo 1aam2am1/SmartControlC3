@@ -24,6 +24,16 @@ namespace Api.Data
                 Revision = v.Revision
             };
         }
+
+        public static explicit operator Version(MyVersion v)
+        {
+            return new Version(v.Major, v.Minor, v.Build, v.Revision);
+        }
+
+        public override string ToString()
+        {
+            return ((Version)this).ToString();
+        }
     }
 
 

@@ -13,7 +13,7 @@ namespace SmartControl.Settings
         public void Restore(ConnectSettings data)
         {
             data.Url = Url;
-            data.Port = Port;
+            data.Port = Int32.Parse(Port);
         }
 
         public void Restore(Credentials data)
@@ -25,7 +25,7 @@ namespace SmartControl.Settings
         public void Save(ConnectSettings data)
         {
             Url = data.Url;
-            Port = data.Port;
+            Port = data.Port.ToString();
         }
 
         public void Save(Credentials data)
@@ -51,15 +51,15 @@ namespace SmartControl.Settings
 
         [UserScopedSetting()]
         [DefaultSettingValue("22654")]
-        public int Port
+        public string Port
         {
             get
             {
-                return Int32.Parse(this[nameof(Port)] as string ?? "22654");
+                return this[nameof(Port)] as string;
             }
             set
             {
-                this[nameof(Port)] = value;
+                this[nameof(Port)] = (string)value;
             }
         }
 

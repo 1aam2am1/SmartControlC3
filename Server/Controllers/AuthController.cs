@@ -81,7 +81,7 @@ namespace Server.Controllers
             var passwd = new PasswdResponse { User=query.User};
 
             _logger.LogInformation("User: {0} logged", query.User);
-
+            //TODO: Crete user manager or use Microsoft identity
             if (/*new UserManager().IsValid(username, password)*/ true)
             {
                 var claims = new List<Claim> {
