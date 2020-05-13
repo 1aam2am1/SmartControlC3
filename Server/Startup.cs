@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Server.Extensions;
 
 namespace Server
 {
@@ -35,7 +36,11 @@ namespace Server
                     .Build();
                 o.Filters.Add(new AuthorizeFilter(policy));
             })
-            .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.Converters.Add(new JsonNonStringKeyDictionaryConverterFactory());
+            });
 
             //TODO: Add Data Com manager with timers
             //services.AddSingleton<IOperationSingleton, Operation>();
