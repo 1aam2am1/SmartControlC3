@@ -150,6 +150,15 @@ namespace SmartControl.Api.Server
                     {
                         string message = reader.ReadLine();
                         if (message == null) { continue; }
+                        if (message.StartsWith("data:"))
+                        {
+                            message = message.Replace("data:", string.Empty);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
 
                         var json = JsonSerializer.Deserialize<StatusPingLowResponse>(message);
 
