@@ -6,49 +6,48 @@
              xmlns:local="clr-namespace:SmartControl.WorkViews" xmlns:mini="clr-namespace:SmartControl.WorkViews.Mini"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid x:Name="Main">
-        <ListView ItemsSource="{Binding Tasks}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top"></StackPanel>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid MinWidth="100" Margin="10,0,10,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" MinHeight="32"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name, Mode=OneWay}" Foreground="Black" VerticalAlignment="Top"/>
-                        <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource ImageButtonStyle}" Command="{Binding A}" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Image Source="/Assets/plus@2x.png" Height="15"/>
-                        </Button>
-                        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Tasks, Mode=OneWay}" 
+    <ListView ItemsSource="{Binding Tasks}" x:Name="Main">
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top"></StackPanel>
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <Grid MinWidth="100" Margin="10,5,10,0" Width="157">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="26"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name, Mode=OneWay}" Foreground="Black" VerticalAlignment="Top"/>
+                    <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource ImageButtonStyle}" Command="{Binding A}" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Image Source="/Assets/plus@2x.png" Height="16"/>
+                    </Button>
+                    <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Tasks, Mode=OneWay}" 
                                   ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False" VerticalAlignment="Stretch"
                                   Height="{Binding ActualHeight, ElementName=Main, Converter={StaticResource MathConverter}, ConverterParameter=x-60}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <mini:Task Value="{Binding}" Delete="{Binding DataContext.D, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"/>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <mini:Task Value="{Binding}" Delete="{Binding DataContext.D, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
 
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
-    </Grid>
+        <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+            </Style>
+        </ListView.ItemContainerStyle>
+    </ListView>
 </UserControl>
