@@ -33,7 +33,11 @@ namespace Server.Controllers
                 Heater = false,
                 ByPass = false,
                 Errors = 0,
-                BateryLow = false,
+                BateryLow = true,
+                //TODO: Remove Changed flags to sse ping response
+                ChangedParameters = true,
+                ChangedCalendar = true,
+                ChangedMod = true,
             };
             return Ok(query);
         }

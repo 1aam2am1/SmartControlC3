@@ -45,7 +45,7 @@ namespace Server.Controllers
         [HttpPost("save")]
         public ActionResult Save([FromBody]ModesSave query)
         {
-            _logger.LogInformation("Saving Modes {0} {1} {2}", string.Join(";", query.Modes.Select(x => x.Key + "="
+            _logger.LogInformation("Saving Modes {0}", string.Join(";", query.Modes.Select(x => x.Key + "="
             + (x.Value.Active ? "1:" : "0:") + x.Value.Value)));
             var result = new OkErrorResponce { Result = OkStatus.Ok };
 

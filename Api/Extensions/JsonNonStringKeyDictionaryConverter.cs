@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Server.Extensions
+namespace Api.Extensions
 {
     sealed class JsonNonStringKeyDictionaryConverter<TKey, TValue> : JsonConverter<IDictionary<TKey, TValue>>
     {
@@ -41,7 +41,7 @@ namespace Server.Extensions
         }
     }
 
-    sealed class JsonNonStringKeyDictionaryConverterFactory : JsonConverterFactory
+    public sealed class JsonNonStringKeyDictionaryConverterFactory : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
         {
