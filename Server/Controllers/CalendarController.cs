@@ -61,9 +61,9 @@ namespace Server.Controllers
                     new CalendarTask
                     {
                         Enabled = true,
-                        Hour = 1,
+                        Hour = new Random().Next(1, 5),
                         Minute = 52,
-                        Duration = 320,
+                        Duration = 62,
                         ExhaustPower = 20,
                         AirflowPower = 60,
                         Heater = false,
@@ -84,6 +84,11 @@ namespace Server.Controllers
                     }
                 }
             };
+
+            if(query.Day == DayOfWeek.Monday)
+            {
+                message.Tasks.RemoveAt(1);
+            }
 
             return Ok(message);
         }

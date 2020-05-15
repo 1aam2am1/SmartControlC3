@@ -35,7 +35,7 @@
                                   Height="{Binding ActualHeight, ElementName=Main, Converter={StaticResource MathConverter}, ConverterParameter=x-60}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <mini:Task Value="{Binding}" Delete="{Binding DataContext.D, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"/>
+                                <mini:Task Value="{Binding Path=., Mode=TwoWay}" Delete="{Binding DataContext.D, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

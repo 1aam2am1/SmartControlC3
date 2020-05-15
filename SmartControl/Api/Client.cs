@@ -315,6 +315,7 @@ namespace SmartControl.Api
             lock (locker)
             {
                 data.UpdateParameters(parameters.Parameters);
+                server_data.UpdateParameters(parameters.Parameters);
             }
         }
 
@@ -333,10 +334,11 @@ namespace SmartControl.Api
 
             lock (locker)
             {
-                data.ActiveDays = result.ActiveDays;
-                data.CalState = result.CalState;
-                data.CalDate = result.Date;
-                data.CalEnabled = result.Enabled;
+                server_data.ActiveDays = data.ActiveDays = result.ActiveDays;
+                server_data.CalState = data.CalState = result.CalState;
+                server_data.CalDate = data.CalDate = result.Date;
+                server_data.CalEnabled = data.CalEnabled = result.Enabled;
+                
             }
 
             await Task.WhenAll(waitfor.ToArray());
@@ -354,6 +356,7 @@ namespace SmartControl.Api
             lock (locker)
             {
                 data.UpdateTask(parametres.Day, parametres.Tasks);
+                server_data.UpdateTask(parametres.Day, parametres.Tasks);
             }
         }
 
@@ -364,6 +367,7 @@ namespace SmartControl.Api
             lock (locker)
             {
                 data.UpdateModes(result.Modes);
+                server_data.UpdateModes(result.Modes);
             }
         }
 
@@ -444,6 +448,7 @@ namespace SmartControl.Api
                     lock (locker)
                     {
                         data.UpdateParameters(d);
+                        server_data.UpdateParameters(d);
                     }
                     break;
                 case OkStatus.Error:
@@ -476,6 +481,7 @@ namespace SmartControl.Api
                             lock (locker)
                             {
                                 data.UpdateTask(query.Day, query.Tasks);
+                                server_data.UpdateTask(query.Day, query.Tasks);
                             }
                             break;
                         case OkStatus.Error:
@@ -507,9 +513,9 @@ namespace SmartControl.Api
                 case OkStatus.Ok:
                     lock (locker)
                     {
-                        data.ActiveDays = c.ActiveDays;
-                        data.CalEnabled = c.Enabled;
-                        data.CalDate = c.Date;
+                        server_data.ActiveDays = data.ActiveDays = c.ActiveDays;
+                        server_data.CalEnabled = data.CalEnabled = c.Enabled;
+                        server_data.CalDate = data.CalDate = c.Date;
                     }
                     break;
                 case OkStatus.Error:
@@ -536,6 +542,7 @@ namespace SmartControl.Api
                     lock (locker)
                     {
                         data.UpdateModes(m);
+                        server_data.UpdateModes(m);
                     }
                     break;
                 case OkStatus.Error:

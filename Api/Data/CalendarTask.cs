@@ -31,5 +31,44 @@ namespace Api.Data
         public int AirTemperature { set; get; }
 
         public bool Boost { set; get; }
+
+
+
+        public static bool operator ==(CalendarTask lhs, CalendarTask rhs)
+        {
+            return lhs.Enabled == rhs.Enabled
+                   && lhs.Hour == rhs.Hour
+                   && lhs.Minute == rhs.Minute
+                   && lhs.Duration == rhs.Duration
+                   && lhs.ExhaustPower == rhs.ExhaustPower
+                   && lhs.AirflowPower == rhs.AirflowPower
+                   && lhs.Heater == rhs.Heater
+                   && lhs.AirTemperature == rhs.AirTemperature
+                   && lhs.Boost == rhs.Boost;
+        }
+
+        public static bool operator !=(CalendarTask lhs, CalendarTask rhs)
+        {
+            return !(lhs == rhs);
+        }
+
+        public override bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                return this == (CalendarTask)obj;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return ((base.GetHashCode() ^ Hour ^ Minute ^ Duration ^ ExhaustPower ^ AirflowPower ^ AirTemperature) << 3)
+                + (Enabled ? 1 : 0) + (Heater ? 2 : 0) + (Boost ? 4 : 0);
+        }
     }
 }

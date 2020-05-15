@@ -62,7 +62,7 @@ namespace Server.Controllers
                         HttpContext.RequestAborted);
                     await response.Body.FlushAsync();
 
-                    await Task.Delay(1000);
+                    await Task.Delay(5000);
                 }
             }
             finally
